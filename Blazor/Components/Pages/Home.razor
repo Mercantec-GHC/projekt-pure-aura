@@ -80,6 +80,21 @@
         border-top: 1px solid #e5e5e5;
         margin-top: 2rem;
     }
+
+    .go-btn {
+        padding: 12px 25px;
+        background: #b08b6c;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .go-btn:hover {
+            background: #957558;
+        }
 </style>
 
 <header>
@@ -152,6 +167,12 @@
     </p>
 </section>
 
+<section>
+    <button class="go-btn" @onclick="GoToCounter">
+        Go to Counter
+    </button>
+</section>
+
 <footer id="contact">
     <p><strong>Contact Us</strong></p>
     <p>Email: hello@pureaura.example</p>
@@ -159,3 +180,12 @@
     <br>
     <p>© 2025 Pure Aura. All rights reserved.</p>
 </footer>
+
+@code {
+    [Inject] NavigationManager Navigation { get; set; }
+
+    void GoToCounter()
+    {
+        Navigation.NavigateTo("/counter");
+    }
+}
