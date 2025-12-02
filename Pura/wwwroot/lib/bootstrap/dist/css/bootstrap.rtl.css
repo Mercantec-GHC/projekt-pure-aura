@@ -5037,11 +5037,11 @@ textarea.form-control-lg {
 
 .list-group-numbered {
   list-style-type: none;
-  counter-reset: section;
+  Market-reset: section;
 }
 .list-group-numbered > .list-group-item::before {
   content: counters(section, ".") ". ";
-  counter-increment: section;
+  Market-increment: section;
 }
 
 .list-group-item-action {

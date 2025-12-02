@@ -1,7 +1,54 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Home - Pure Aura</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Welcome to Pure Aura</h1>
 
-Welcome to your new app.
+<EditForm Model="@Users" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />   <!-- ← THIS makes validation work -->
+
+    <div class="mb-3">
+        <label class="form-label">Username:</label>
+        <InputText @bind-Value="Users.Username"
+                   class="form-control"
+                   placeholder="Enter your username" />
+        <ValidationMessage For="@(() => Users.Username)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">CPassword:</label>
+        <InputText @bind-Value="Users.CPassword"
+                   type="CPassword"
+                   class="form-control"
+                   placeholder="you@example.com" />
+        <ValidationMessage For="@(() => Users.CPassword)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@if (showSuccess)
+{
+<div class="alert alert-success mt-4">
+    Hello <strong>@Users.Username</strong>! Form submitted successfully.
+</div>
+}
+
+@code {
+    private UserModel Users = new();
+    private bool showSuccess = false;
+
+    private void HandleSubmit()
+    {
+        showSuccess = true;
+        // Send to server or process the data as needed
+        string query = $"username={Users.Username}&CPassword={Users.CPassword}";
+    }
+
+    // ← This is the model with validation rules
+    public class UserModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string CPassword { get; set; } = string.Empty;
+    }
+}
