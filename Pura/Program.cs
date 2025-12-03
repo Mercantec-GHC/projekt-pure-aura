@@ -9,7 +9,7 @@ internal class Program
 
         // BEST PRACTICE: Get connection string from config (appsettings.json or user-secrets)
         var connectionString = builder.Configuration.GetConnectionString("NeonDb")
-            ?? "Host=ep-dark-king-a92zz5wn-pooler.gwc.azure.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_N1Kf7gokGnEe;SslMode=Require;Trust Server Certificate=true;";
+            ?? "Host=ep-dark-king-a92zz5wn.gwc.azure.neon.tech\r\nPort=5432\r\nDatabase=neondb\r\nUsername=neondb_owner\r\nPassword=...\r\nSslMode=Require;";
 
         // Create and register NpgsqlDataSource
         var dataSource = NpgsqlDataSource.Create(connectionString);
