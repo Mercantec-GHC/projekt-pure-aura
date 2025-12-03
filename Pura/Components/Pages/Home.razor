@@ -12,6 +12,9 @@
     }
 
     header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
         padding: 1rem 2rem;
         display: flex;
         justify-content: space-between;
@@ -98,10 +101,35 @@
             background: #957558;
         }
 
-    .cart {
-        font-weight: 600;
-        color: #b08b6c;
-        padding: 1rem 2rem;
+    /* Floating Cart Button */
+    .floating-cart {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #b08b6c;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Modal */
+    .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-box {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        width: 350px;
     }
 </style>
 
@@ -111,12 +139,13 @@
         <a href="#collections">Collections</a>
         <a href="#featured">Featured</a>
         <a href="#about">About</a>
+        <a href="#login-section">Login</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
 
-<div class="cart">
-    Cart: @Cart.Count items
+<div class="floating-cart" @onclick="ToggleCartModal">
+    Cart (@Cart.Count)
 </div>
 
 <section class="hero">
@@ -172,35 +201,6 @@
         </div>
     </div>
 </section>
-
-@if (Cart.Count > 0)
-{
-    <section>
-        <h2>Your Cart</h2>
-        <ul>
-            @foreach (var item in Cart)
-            {
-                <li>@item</li>
-            }
-        </ul>
-    </section>
-}
-
-<section id="about">
-    <h2>About Pure Aura</h2>
-    <p>
-        Pure Aura creates handcrafted jewelry inspired by minimalist beauty
-        and natural radiance. Each piece is made with intention, using
-        high-quality and sustainable materials.
-    </p>
-</section>
-
-<section>
-    <button class="go-btn" @onclick="GoToCounter">
-        Go to Counter
-    </button>
-</section>
-
 <footer id="contact">
     <p><strong>Contact Us</strong></p>
     <p>Email: hello@pureaura.example</p>
@@ -209,54 +209,95 @@
     <p>© 2025 Pure Aura. All rights reserved.</p>
 </footer>
 
-<!-- FORM SECTION -->
-<EditForm Model="@Users" OnValidSubmit="@HandleSubmit">
-    <DataAnnotationsValidator />
+<!-- LOGIN MODAL TRIGGER SECTION -->
+<section id="login-section">
+    <h2>Login</h2>
+    <button class="go-btn" @onclick="() => ShowLoginModal = true">Open Login</button>
+</section>
 
-    <div class="mb-3">
-        <label class="form-label">Username:</label>
-        <InputText @bind-Value="Users.Username"
-                   class="form-control"
-                   placeholder="Enter your username" />
-        <ValidationMessage For="@(() => Users.Username)" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Password:</label>
-        <InputText @bind-Value="Users.CPassword"
-                   type="password"
-                   class="form-control"
-                   placeholder="Enter your password" />
-        <ValidationMessage For="@(() => Users.CPassword)" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
-
-@if (showSuccess)
+<!-- LOGIN MODAL -->
+@if (ShowLoginModal)
 {
-    <div class="alert alert-success mt-4">
-        Hello <strong>@Users.Username</strong>! Form submitted successfully.
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Login</h3>
+            <EditForm Model="@Users" OnValidSubmit="@HandleSubmit">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label>Username:</label>
+                    <InputText @bind-Value="Users.Username" class="form-control" />
+                    <ValidationMessage For="@(() => Users.Username)" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Password:</label>
+                    <InputText @bind-Value="Users.CPassword" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => Users.CPassword)" />
+                </div>
+
+                <button class="go-btn" type="submit">Submit</button>
+                <button class="go-btn" style="margin-left:10px;background:#777" @onclick="() => ShowLoginModal = false">Cancel</button>
+            </EditForm>
+
+            @if (showSuccess)
+            {
+                <div class="alert alert-success mt-4">
+                    Hello <strong>@Users.Username</strong>! Login successful.
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- CART MODAL -->
+@if (ShowCartModal)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Your Cart</h3>
+
+            @if (Cart.Count == 0)
+            {
+                <p>Your cart is empty.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in Cart)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            }
+
+            <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
+        </div>
     </div>
 }
 
 @code {
     [Inject] NavigationManager Navigation { get; set; }
 
-    // Cart logic
     private List<string> Cart = new();
+    private bool ShowCartModal = false;
+    private bool ShowLoginModal = false;
+
     void AddToCart(string itemName)
     {
         Cart.Add(itemName);
     }
 
-    // Navigation button
+    void ToggleCartModal()
+    {
+        ShowCartModal = !ShowCartModal;
+    }
+
     void GoToCounter()
     {
         Navigation.NavigateTo("/Market");
     }
 
-    // Form model + logic
     private UserModel Users = new();
     private bool showSuccess = false;
 
