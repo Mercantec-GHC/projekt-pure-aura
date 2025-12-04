@@ -45,11 +45,11 @@
         text-align: center;
     }
 
-        .hero h1 {
-            margin: 0;
-            font-size: 3rem;
-            color: #b08b6c;
-        }
+    .hero h1 {
+        margin: 0;
+        font-size: 3rem;
+        color: #b08b6c;
+    }
 
     .placeholder {
         width: 100%;
@@ -100,9 +100,9 @@
         transition: 0.2s;
     }
 
-        .go-btn:hover {
-            background: #957558;
-        }
+    .go-btn:hover {
+        background: #957558;
+    }
 
     .floating-cart {
         position: fixed;
@@ -146,13 +146,13 @@
         padding-left: 0;
     }
 
-        ul li {
-            list-style: none;
-            background: #f5f5f5;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-        }
+    ul li {
+        list-style: none;
+        background: #f5f5f5;
+        padding: 8px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+    }
 </style>
 
 <header>
@@ -285,9 +285,7 @@
 
                 <button class="go-btn" type="submit">Submit</button>
                 <button class="go-btn" style="margin-left:10px;background:#777"
-                        @onclick="() => ShowLoginModal = false">
-                    Cancel
-                </button>
+                        @onclick="() => ShowLoginModal = false">Cancel</button>
             </EditForm>
 
             @if (LoginSuccess)
@@ -345,9 +343,7 @@
 
             <button class="go-btn" @onclick="() => AddToCart(SelectedProduct.Name)">Add to Cart</button>
             <button class="go-btn" style="background:#777; margin-left:10px;"
-                    @onclick="() => ShowDetailsModal = false">
-                Close
-            </button>
+                    @onclick="() => ShowDetailsModal = false">Close</button>
         </div>
     </div>
 }
@@ -422,9 +418,9 @@
         await Conn.OpenAsync();
 
         using var cmd = new NpgsqlCommand(@"
-            SELECT username
-            FROM Users
-            WHERE username = @u
+            SELECT username 
+            FROM Users 
+            WHERE username = @u 
             AND password_hash = crypt(@p, password_hash);
         ", Conn);
 
