@@ -389,6 +389,7 @@
         {
             await Conn.OpenAsync();
 
+            // Get stored password hash for the user
             using var cmd = new NpgsqlCommand(@"
                 SELECT upassword
                 FROM public.""Users""
@@ -399,9 +400,20 @@
 
             var result = await cmd.ExecuteScalarAsync();
 
-            if (result is string storedHash && !string.IsNullOrEmpty(storedHash))
+            if (result is not string storedHash || string.IsNullOrEmpty(storedHash))
             {
-                // Requires BCrypt.Net-Next NuGet package
+                ErrorMessage = "Invalid username or password.";
+                return;
+            }
+
+            // Detect common hash formats:
+            // bcrypt hashes typically start with $2a$, $2b$, $2y$ and are ~60 chars.
+            bool looksLikeBcrypt = (storedHash.StartsWith("$2a$") || storedHash.StartsWith("$2b$") || storedHash.StartsWith("$2y$")) && storedHash.Length >= 50;
+
+            if (looksLikeBcrypt)
+            {
+                // Verify using bcrypt in-app.
+                // Ensure package: BCrypt.Net-Next
                 var verified = BCrypt.Net.BCrypt.Verify(Users.CPassword, storedHash);
 
                 if (verified)
@@ -415,7 +427,38 @@
             }
             else
             {
-                ErrorMessage = "Invalid username or password.";
+                // If not bcrypt, try DB-side verification with pgcrypto crypt() if available.
+                // Use explicit cast to text to avoid function signature mismatches.
+                try
+                {
+                    using var cryptCmd = new NpgsqlCommand(@"
+                        SELECT 1
+                        FROM public.""Users""
+                        WHERE username = @u
+                        AND upassword = crypt(@p, upassword::text);
+                    ", Conn);
+
+                    cryptCmd.Parameters.AddWithValue("@u", Users.Username);
+                    cryptCmd.Parameters.AddWithValue("@p", Users.CPassword);
+
+                    var cryptResult = await cryptCmd.ExecuteScalarAsync();
+
+                    if (cryptResult != null)
+                    {
+                        showSuccess = true;
+                    }
+                    else
+                    {
+                        // No match via crypt either
+                        ErrorMessage = "Invalid username or password.";
+                    }
+                }
+                catch (PostgresException pgEx)
+                {
+                    // Common root causes: pgcrypto extension not installed, or crypt() signature mismatch.
+                    ErrorMessage = "Authentication failed: server does not support DB-side crypt verification. " +
+                                   "Ensure pgcrypto is installed or migrate passwords to bcrypt.";
+                }
             }
         }
         catch (Exception ex)
