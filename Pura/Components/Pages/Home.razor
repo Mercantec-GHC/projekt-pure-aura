@@ -385,30 +385,47 @@
         showSuccess = false;
         ErrorMessage = "";
 
-        await Conn.OpenAsync();
-
-        using var cmd = new NpgsqlCommand(@"
-            SELECT username
-            FROM Users
-            WHERE username = @u
-            AND upassword = crypt(@p, upassword);
-        ", Conn);
-
-        cmd.Parameters.AddWithValue("@u", Users.Username);
-        cmd.Parameters.AddWithValue("@p", Users.CPassword);
-
-        var result = await cmd.ExecuteScalarAsync();
-
-        if (result != null)
+        try
         {
-            showSuccess = true;
-        }
-        else
-        {
-            ErrorMessage = "Invalid username or password.";
-        }
+            await Conn.OpenAsync();
 
-        await Conn.CloseAsync();
+            using var cmd = new NpgsqlCommand(@"
+                SELECT upassword
+                FROM public.""Users""
+                WHERE username = @u;
+            ", Conn);
+
+            cmd.Parameters.AddWithValue("@u", Users.Username);
+
+            var result = await cmd.ExecuteScalarAsync();
+
+            if (result is string storedHash && !string.IsNullOrEmpty(storedHash))
+            {
+                // Requires BCrypt.Net-Next NuGet package
+                var verified = BCrypt.Net.BCrypt.Verify(Users.CPassword, storedHash);
+
+                if (verified)
+                {
+                    showSuccess = true;
+                }
+                else
+                {
+                    ErrorMessage = "Invalid username or password.";
+                }
+            }
+            else
+            {
+                ErrorMessage = "Invalid username or password.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            await Conn.CloseAsync();
+        }
     }
 
     public class UserModel
@@ -417,3 +434,19 @@
         public string CPassword { get; set; } = "";
     }
 }
+
+sql db/check_pgcrypto.sql
+SELECT extname, extversion
+FROM pg_extension
+WHERE extname = 'pgcrypto';
+
+sql db/check_users_table.sql
+SELECT table_schema, table_name
+FROM information_schema.tables
+WHERE lower(table_name) = 'users';
+
+sql db/create_pgcrypto.sql
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+SELECT current_database() AS db, current_user AS user;
+SHOW search_path;
