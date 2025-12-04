@@ -7,6 +7,7 @@
 <PageTitle>Home - Pure Aura</PageTitle>
 
 <style>
+    /* ====== General Styles ====== */
     body {
         font-family: Inter, sans-serif;
         margin: 0;
@@ -38,6 +39,7 @@
         text-decoration: none;
         color: #222;
         font-weight: 500;
+        cursor: pointer;
     }
 
     .hero {
@@ -45,11 +47,11 @@
         text-align: center;
     }
 
-    .hero h1 {
-        margin: 0;
-        font-size: 3rem;
-        color: #b08b6c;
-    }
+        .hero h1 {
+            margin: 0;
+            font-size: 3rem;
+            color: #b08b6c;
+        }
 
     .placeholder {
         width: 100%;
@@ -70,7 +72,7 @@
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
         gap: 1rem;
     }
 
@@ -100,9 +102,9 @@
         transition: 0.2s;
     }
 
-    .go-btn:hover {
-        background: #957558;
-    }
+        .go-btn:hover {
+            background: #957558;
+        }
 
     .floating-cart {
         position: fixed;
@@ -117,6 +119,7 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
+    /* ====== Modal Styles ====== */
     .modal-bg {
         z-index: 2000;
         position: fixed;
@@ -139,6 +142,7 @@
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 6px;
+        margin-bottom: 10px;
     }
 
     ul {
@@ -146,13 +150,13 @@
         padding-left: 0;
     }
 
-    ul li {
-        list-style: none;
-        background: #f5f5f5;
-        padding: 8px;
-        border-radius: 6px;
-        margin-bottom: 6px;
-    }
+        ul li {
+            list-style: none;
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
 </style>
 
 <header>
@@ -161,7 +165,8 @@
         <a href="#collections">Collections</a>
         <a href="#featured">Featured</a>
         <a href="#about">About</a>
-        <a href="#" @onclick="() => ShowLoginModal = true">Login</a>
+        <a @onclick="() => ShowLoginModal = true">Login</a>
+        <a @onclick="() => ShowSignupModal = true">Sign Up</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
@@ -197,44 +202,30 @@
     </div>
 </section>
 
-<!-- =============================== -->
-<!--     FEATURED WITH SEARCH/FILTER -->
-<!-- =============================== -->
 <section id="featured">
     <h2>Featured Jewelry</h2>
-
-    <!-- SEARCH + FILTER -->
-    <div style="display:flex; gap:1rem; margin-bottom:1rem;">
-        <InputText @bind-Value="SearchText"
-                   class="form-control"
-                   style="max-width:250px;"
-                   placeholder="Search products..." />
-
-        <select @bind="SelectedCategory" class="form-control" style="max-width:200px;">
-            <option value="">All Categories</option>
-            @foreach (var cat in Categories)
-            {
-                <option value="@cat">@cat</option>
-            }
-        </select>
-    </div>
-
     <div class="grid">
-        @foreach (var p in FilteredProducts)
-        {
-            <div class="card">
-                <div class="placeholder">Product Image</div>
-
-                <h4>@p.Name</h4>
-                <p>@p.Description</p>
-                <strong>@p.Price</strong>
-
-                <div style="margin-top:10px; display:flex; gap:10px;">
-                    <button class="go-btn" @onclick='() => AddToCart(p.Name)'>Add to Cart</button>
-                    <button class="go-btn" style="background:#777" @onclick='() => OpenDetails(p)'>Details</button>
-                </div>
-            </div>
-        }
+        <div class="card">
+            <div class="placeholder">Product Image</div>
+            <h4>Luna Necklace</h4>
+            <p>Freshwater pearl • gold finish</p>
+            <strong>$149</strong>
+            <button class="go-btn" @onclick='() => AddToCart("Luna Necklace")'>Add to Cart</button>
+        </div>
+        <div class="card">
+            <div class="placeholder">Product Image</div>
+            <h4>Sol Ring</h4>
+            <p>Sterling silver • hammered texture</p>
+            <strong>$89</strong>
+            <button class="go-btn" @onclick='() => AddToCart("Sol Ring")'>Add to Cart</button>
+        </div>
+        <div class="card">
+            <div class="placeholder">Product Image</div>
+            <h4>Aster Earrings</h4>
+            <p>Rose gold minimalist studs</p>
+            <strong>$119</strong>
+            <button class="go-btn" @onclick='() => AddToCart("Aster Earrings")'>Add to Cart</button>
+        </div>
     </div>
 </section>
 
@@ -247,10 +238,6 @@
     </p>
 </section>
 
-<section>
-    <button class="go-btn" @onclick="GoToCounter">Go to Market</button>
-</section>
-
 <footer id="contact">
     <p><strong>Contact Us</strong></p>
     <p>Email: hello@pureaura.example</p>
@@ -259,48 +246,74 @@
     <p>© 2025 Pure Aura. All rights reserved.</p>
 </footer>
 
-<!-- =============================== -->
-<!--            LOGIN MODAL          -->
-<!-- =============================== -->
+<!-- ===================== LOGIN MODAL ===================== -->
 @if (ShowLoginModal)
 {
     <div class="modal-bg">
         <div class="modal-box">
             <h3>Login</h3>
-
-            <EditForm Model="@Users" OnValidSubmit="@HandleLogin">
+            <EditForm Model="@LoginUser" OnValidSubmit="@HandleLogin">
                 <DataAnnotationsValidator />
 
-                <div class="mb-3">
-                    <label>Username:</label>
-                    <InputText @bind-Value="Users.Username" class="form-control" />
-                    <ValidationMessage For="@(() => Users.Username)" />
-                </div>
+                <label>Username:</label>
+                <InputText @bind-Value="LoginUser.Username" class="form-control" />
 
-                <div class="mb-3">
-                    <label>Password:</label>
-                    <InputText @bind-Value="Users.CPassword" type="password" class="form-control" />
-                    <ValidationMessage For="@(() => Users.CPassword)" />
-                </div>
+                <label>Password:</label>
+                <InputText @bind-Value="LoginUser.CPassword" type="password" class="form-control" />
 
-                <button class="go-btn" type="submit">Submit</button>
-                <button class="go-btn" style="margin-left:10px;background:#777"
-                        @onclick="() => ShowLoginModal = false">Cancel</button>
+                @if (!string.IsNullOrEmpty(LoginError))
+                {
+                    <div style="color:red">@LoginError</div>
+                }
+
+                @if (LoginSuccess)
+                {
+                    <div style="color:green">Login successful! Redirecting...</div>
+                }
+
+                <button class="go-btn" type="submit">Login</button>
+                <button class="go-btn" style="margin-left:10px;background:#777" @onclick="() => ShowLoginModal = false">Cancel</button>
             </EditForm>
-
-            @if (LoginSuccess)
-            {
-                <div class="alert alert-success mt-4">
-                    Hello <strong>@Users.Username</strong>! Login successful.
-                </div>
-            }
         </div>
     </div>
 }
 
-<!-- =============================== -->
-<!--             CART MODAL          -->
-<!-- =============================== -->
+<!-- ===================== SIGNUP MODAL ===================== -->
+@if (ShowSignupModal)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Sign Up</h3>
+            <EditForm Model="@SignupUser" OnValidSubmit="@HandleSignup">
+                <DataAnnotationsValidator />
+
+                <label>Username:</label>
+                <InputText @bind-Value="SignupUser.Username" class="form-control" />
+
+                <label>Password:</label>
+                <InputText @bind-Value="SignupUser.CPassword" type="password" class="form-control" />
+
+                <label>Confirm Password:</label>
+                <InputText @bind-Value="SignupConfirm" type="password" class="form-control" />
+
+                @if (!string.IsNullOrEmpty(SignupError))
+                {
+                    <div style="color:red">@SignupError</div>
+                }
+
+                @if (SignupSuccess)
+                {
+                    <div style="color:green">Account created! You can now login.</div>
+                }
+
+                <button class="go-btn" type="submit">Sign Up</button>
+                <button class="go-btn" style="margin-left:10px;background:#777" @onclick="() => ShowSignupModal = false">Cancel</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<!-- ===================== CART MODAL ===================== -->
 @if (ShowCartModal)
 {
     <div class="modal-bg">
@@ -326,129 +339,95 @@
     </div>
 }
 
-<!-- =============================== -->
-<!--        PRODUCT DETAILS MODAL    -->
-<!-- =============================== -->
-@if (ShowDetailsModal && SelectedProduct != null)
-{
-    <div class="modal-bg">
-        <div class="modal-box">
-            <h3>@SelectedProduct.Name</h3>
-
-            <div class="placeholder" style="height:180px;">Product Image</div>
-
-            <p><strong>Description:</strong> @SelectedProduct.Description</p>
-            <p><strong>Category:</strong> @SelectedProduct.Category</p>
-            <p><strong>Price:</strong> @SelectedProduct.Price</p>
-
-            <button class="go-btn" @onclick="() => AddToCart(SelectedProduct.Name)">Add to Cart</button>
-            <button class="go-btn" style="background:#777; margin-left:10px;"
-                    @onclick="() => ShowDetailsModal = false">Close</button>
-        </div>
-    </div>
-}
-
 @code {
-    // CART DATA
+    // ----------------- CART -----------------
     private List<string> Cart = new();
     private bool ShowCartModal = false;
+    void AddToCart(string itemName) => Cart.Add(itemName);
+    void ToggleCartModal() => ShowCartModal = !ShowCartModal;
 
-    // LOGIN DATA
+    // ----------------- LOGIN -----------------
     private bool ShowLoginModal = false;
+    private UserModel LoginUser = new();
     private bool LoginSuccess = false;
-    private string ErrorMessage = "";
-    private UserModel Users = new();
+    private string LoginError = "";
 
-    // SEARCH / FILTER DATA
-    private string SearchText = "";
-    private string SelectedCategory = "";
-
-    // DETAIL MODAL DATA
-    private bool ShowDetailsModal = false;
-    private Product? SelectedProduct;
-
-    // PRODUCT LIST
-    private List<string> Categories = new() { "Necklace", "Ring", "Earrings" };
-
-    private List<Product> Products = new()
-    {
-        new Product { Name="Luna Necklace", Category="Necklace", Description="Freshwater pearl • gold finish", Price="$149" },
-        new Product { Name="Sol Ring", Category="Ring", Description="Sterling silver • hammered texture", Price="$89" },
-        new Product { Name="Aster Earrings", Category="Earrings", Description="Rose gold minimalist studs", Price="$119" }
-    };
-
-    // FILTERED PRODUCTS
-    private IEnumerable<Product> FilteredProducts =>
-        Products.Where(p =>
-            (string.IsNullOrWhiteSpace(SearchText) ||
-             p.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-             p.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
-            &&
-            (string.IsNullOrWhiteSpace(SelectedCategory) ||
-             p.Category == SelectedCategory)
-        );
-
-    // FUNCTIONS
-    void AddToCart(string item)
-    {
-        Cart.Add(item);
-    }
-
-    void ToggleCartModal()
-    {
-        ShowCartModal = !ShowCartModal;
-    }
-
-    void OpenDetails(Product p)
-    {
-        SelectedProduct = p;
-        ShowDetailsModal = true;
-    }
-
-    void GoToCounter()
-    {
-        Navigation.NavigateTo("/Market");
-    }
-
-    // LOGIN HANDLER
     private async Task HandleLogin()
     {
+        LoginError = "";
         LoginSuccess = false;
 
         await Conn.OpenAsync();
-
         using var cmd = new NpgsqlCommand(@"
-            SELECT username 
-            FROM Users 
-            WHERE username = @u 
-            AND password_hash = crypt(@p, password_hash);
+            SELECT username
+            FROM Users
+            WHERE username=@u AND password_hash = crypt(@p, password_hash);
         ", Conn);
 
-        cmd.Parameters.AddWithValue("@u", Users.Username);
-        cmd.Parameters.AddWithValue("@p", Users.CPassword);
+        cmd.Parameters.AddWithValue("@u", LoginUser.Username);
+        cmd.Parameters.AddWithValue("@p", LoginUser.CPassword);
 
         var result = await cmd.ExecuteScalarAsync();
+        await Conn.CloseAsync();
 
         if (result != null)
+        {
             LoginSuccess = true;
+            await Task.Delay(1000);
+            ShowLoginModal = false;
+        }
         else
-            ErrorMessage = "Invalid username or password.";
+        {
+            LoginError = "Invalid username or password.";
+        }
+    }
 
+    // ----------------- SIGNUP -----------------
+    private bool ShowSignupModal = false;
+    private UserModel SignupUser = new();
+    private string SignupConfirm = "";
+    private bool SignupSuccess = false;
+    private string SignupError = "";
+
+    private async Task HandleSignup()
+    {
+        SignupError = "";
+        SignupSuccess = false;
+
+        if (SignupUser.CPassword != SignupConfirm)
+        {
+            SignupError = "Passwords do not match.";
+            return;
+        }
+
+        await Conn.OpenAsync();
+        try
+        {
+            using var cmd = new NpgsqlCommand(@"
+                INSERT INTO Users(username, password_hash)
+                VALUES(@u, crypt(@p, gen_salt('bf')));
+            ", Conn);
+
+            cmd.Parameters.AddWithValue("@u", SignupUser.Username);
+            cmd.Parameters.AddWithValue("@p", SignupUser.CPassword);
+
+            await cmd.ExecuteNonQueryAsync();
+            SignupSuccess = true;
+
+            await Task.Delay(1000);
+            ShowSignupModal = false;
+        }
+        catch (PostgresException ex) when (ex.SqlState == "23505")
+        {
+            SignupError = "Username already exists.";
+        }
         await Conn.CloseAsync();
     }
 
-    // MODELS
+    // ----------------- USER MODEL -----------------
     public class UserModel
     {
         public string Username { get; set; } = "";
         public string CPassword { get; set; } = "";
-    }
-
-    public class Product
-    {
-        public string Name { get; set; } = "";
-        public string Category { get; set; } = "";
-        public string Description { get; set; } = "";
-        public string Price { get; set; } = "";
     }
 }
