@@ -389,7 +389,7 @@
 
         using var cmd = new NpgsqlCommand(@"
             SELECT username
-            FROM users
+            FROM Users
             WHERE username = @u
             AND upassword = crypt(@p, upassword);
         ", Conn);
