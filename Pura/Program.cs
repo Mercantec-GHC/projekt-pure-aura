@@ -7,24 +7,22 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // BEST PRACTICE: Get connection string from config (appsettings.json or user-secrets)
         var connectionString = builder.Configuration.GetConnectionString("NeonDb")
-            ?? "Host=ep-dark-king-a92zz5wn-pooler.gwc.azure.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_N1Kf7gokGnEe;SslMode=Require;Trust Server Certificate=true;";
+            ?? "Host=ep-dark-king-a92zz5wn.gwc.azure.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_N1Kf7gokGnEe;SslMode=Require";
 
-        // Create and register NpgsqlDataSource
         var dataSource = NpgsqlDataSource.Create(connectionString);
-        builder.Services.AddSingleton(dataSource);  // This is correct
+        builder.Services.AddSingleton(dataSource);
 
-        // THIS IS THE LINE YOU WERE MISSING — ADD IT!
+        builder.Services.AddScoped<NpgsqlConnection>(sp =>
+            sp.GetRequiredService<NpgsqlDataSource>().CreateConnection());
+
         builder.Services.AddScoped<PostService>();
 
-        // Standard Blazor setup
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
         var app = builder.Build();
 
-        // Optional: Test connection at startup (great for debugging)
         try
         {
             await using var conn = await dataSource.OpenConnectionAsync();
@@ -48,7 +46,6 @@ internal class Program
         app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
         app.UseAntiforgery();
-
         app.MapStaticAssets();
 
         app.MapRazorComponents<App>()
