@@ -1,49 +1,49 @@
 ﻿@page "/"
 @using Npgsql
 @inject NpgsqlConnection Conn
-    @rendermode InteractiveServer
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
 
-      
-    <PageTitle>Home - Pure Aura</PageTitle>
+<PageTitle>Home - Pure Aura</PageTitle>
 
-    <style>
-        body {
-            font-family: Inter, sans-serif;
-            margin: 0;
-            background: #faf8f6;
-            color: #222;
-        }
+<style>
+    body {
+        font-family: Inter, sans-serif;
+        margin: 0;
+        background: #faf8f6;
+        color: #222;
+    }
 
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #ffffffcc;
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid #e5e5e5;
-        }
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffffcc;
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid #e5e5e5;
+    }
 
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #b08b6c;
-        }
+    .logo {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #b08b6c;
+    }
 
-        nav a {
-            margin-left: 1rem;
-            text-decoration: none;
-            color: #222;
-            font-weight: 500;
-        }
+    nav a {
+        margin-left: 1rem;
+        text-decoration: none;
+        color: #222;
+        font-weight: 500;
+    }
 
-        .hero {
-            padding: 3rem 2rem;
-            text-align: center;
-        }
+    .hero {
+        padding: 3rem 2rem;
+        text-align: center;
+    }
 
         .hero h1 {
             margin: 0;
@@ -51,315 +51,351 @@
             color: #b08b6c;
         }
 
-        .placeholder {
-            width: 100%;
-            height: 250px;
-            background: #ddd;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #777;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
+    .placeholder {
+        width: 100%;
+        height: 250px;
+        background: #ddd;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #777;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
 
-        section {
-            padding: 2rem;
-        }
+    section {
+        padding: 2rem;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+    }
 
-        .card {
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+    .card {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: #fff;
-            border-top: 1px solid #e5e5e5;
-            margin-top: 2rem;
-        }
+    footer {
+        text-align: center;
+        padding: 2rem;
+        background: #fff;
+        border-top: 1px solid #e5e5e5;
+        margin-top: 2rem;
+    }
 
-        .go-btn {
-            padding: 12px 25px;
-            background: #b08b6c;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+    .go-btn {
+        padding: 12px 25px;
+        background: #b08b6c;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
 
         .go-btn:hover {
             background: #957558;
         }
 
-        .floating-cart {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #b08b6c;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
+    .floating-cart {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #b08b6c;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
 
-        .modal-bg {
-            z-index: 2000;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .modal-bg {
+        z-index: 2000;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        .modal-box {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            width: 350px;
-        }
+    .modal-box {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        width: 350px;
+    }
 
-        /* Additional modal & form styles preserved */
-        .modal-bg.alt {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0,0,0,0.6);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
-        .modal-box.alt {
-          background: #fff;
-          padding: 30px;
-          border-radius: 12px;
-          width: 350px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-          text-align: center;
-        }
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
 
-        /* optional override from preserved block (kept but non-breaking) */
-        .go-btn.alt {
-          background: #c49a6c;
-          color: white;
-          padding: 10px 18px;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: 0.2s;
-        }
-        .go-btn.alt:hover {
-          background: #a67d4d;
-        }
+    ul {
+        text-align: left;
+        padding-left: 0;
+    }
 
-        .form-control {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-        }
-
-        ul {
-          text-align: left;
-          padding-left: 0;
-        }
         ul li {
-          list-style: none;
-          background: #f5f5f5;
-          padding: 8px;
-          border-radius: 6px;
-          margin-bottom: 6px;
+            list-style: none;
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
         }
-    </style>
+</style>
 
-    <header>
-        <div class="logo">Pure Aura</div>
-        <nav>
-            <a href="#collections">Collections</a>
-            <a href="#featured">Featured</a>
-            <a href="#about">About</a>
-            <a href="#" @onclick="() => ShowLoginModal = true">Login</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+<header>
+    <div class="logo">Pure Aura</div>
+    <nav>
+        <a href="#collections">Collections</a>
+        <a href="#featured">Featured</a>
+        <a href="#about">About</a>
+        <a href="#" @onclick="() => ShowLoginModal = true">Login</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
 
-    <div class="floating-cart" @onclick="ToggleCartModal">
-        Cart (@Cart.Count)
+<div class="floating-cart" @onclick="ToggleCartModal">
+    Cart (@Cart.Count)
+</div>
+
+<section class="hero">
+    <h1>Pure Aura</h1>
+    <p>Timeless handcrafted jewelry designed to shine with your natural aura.</p>
+    <div class="placeholder">Hero Image Placeholder</div>
+</section>
+
+<section id="collections">
+    <h2>Collections</h2>
+    <div class="grid">
+        <div class="card">
+            <div class="placeholder">Image Placeholder</div>
+            <h3>Everyday Essentials</h3>
+            <p>Sleek minimal pieces for daily wear.</p>
+        </div>
+        <div class="card">
+            <div class="placeholder">Image Placeholder</div>
+            <h3>Bridal Glow</h3>
+            <p>Elegant jewelry for special moments.</p>
+        </div>
+        <div class="card">
+            <div class="placeholder">Image Placeholder</div>
+            <h3>Statement Gems</h3>
+            <p>Bold pieces that stand out.</p>
+        </div>
+    </div>
+</section>
+
+<!-- =============================== -->
+<!--     FEATURED WITH SEARCH/FILTER -->
+<!-- =============================== -->
+<section id="featured">
+    <h2>Featured Jewelry</h2>
+
+    <!-- SEARCH + FILTER -->
+    <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+        <InputText @bind-Value="SearchText"
+                   class="form-control"
+                   style="max-width:250px;"
+                   placeholder="Search products..." />
+
+        <select @bind="SelectedCategory" class="form-control" style="max-width:200px;">
+            <option value="">All Categories</option>
+            @foreach (var cat in Categories)
+            {
+                <option value="@cat">@cat</option>
+            }
+        </select>
     </div>
 
-    <section class="hero">
-        <h1>Pure Aura</h1>
-        <p>Timeless handcrafted jewelry designed to shine with your natural aura.</p>
-        <div class="placeholder">Hero Image Placeholder</div>
-    </section>
-
-    <section id="collections">
-        <h2>Collections</h2>
-        <div class="grid">
-            <div class="card">
-                <div class="placeholder">Image Placeholder</div>
-                <h3>Everyday Essentials</h3>
-                <p>Sleek minimal pieces for daily wear.</p>
-            </div>
-            <div class="card">
-                <div class="placeholder">Image Placeholder</div>
-                <h3>Bridal Glow</h3>
-                <p>Elegant jewelry for special moments.</p>
-            </div>
-            <div class="card">
-                <div class="placeholder">Image Placeholder</div>
-                <h3>Statement Gems</h3>
-                <p>Bold pieces that stand out.</p>
-            </div>
-        </div>
-    </section>
-
-
-    
-    <section id="featured">
-        <h2>Featured Jewelry</h2>
-        <div class="grid">
+    <div class="grid">
+        @foreach (var p in FilteredProducts)
+        {
             <div class="card">
                 <div class="placeholder">Product Image</div>
-                <h4>Luna Necklace</h4>
-                <p>Freshwater pearl • gold finish</p>
-                <strong>$149</strong>
-                <button class="go-btn" @onclick='() => AddToCart("Luna Necklace")'>Add to Cart</button>
+
+                <h4>@p.Name</h4>
+                <p>@p.Description</p>
+                <strong>@p.Price</strong>
+
+                <div style="margin-top:10px; display:flex; gap:10px;">
+                    <button class="go-btn" @onclick='() => AddToCart(p.Name)'>Add to Cart</button>
+                    <button class="go-btn" style="background:#777" @onclick='() => OpenDetails(p)'>Details</button>
+                </div>
             </div>
-            <div class="card">
-                <div class="placeholder">Product Image</div>
-                <h4>Sol Ring</h4>
-                <p>Sterling silver • hammered texture</p>
-                <strong>$89</strong>
-                <button class="go-btn" @onclick='() => AddToCart("Sol Ring")'>Add to Cart</button>
-            </div>
-            <div class="card">
-                <div class="placeholder">Product Image</div>
-                <h4>Aster Earrings</h4>
-                <p>Rose gold minimalist studs</p>
-                <strong>$119</strong>
-                <button class="go-btn" @onclick='() => AddToCart("Aster Earrings")'>Add to Cart</button>
-            </div>
+        }
+    </div>
+</section>
+
+<section id="about">
+    <h2>About Pure Aura</h2>
+    <p>
+        Pure Aura creates handcrafted jewelry inspired by minimalist beauty
+        and natural radiance. Each piece is made with intention, using
+        high-quality and sustainable materials.
+    </p>
+</section>
+
+<section>
+    <button class="go-btn" @onclick="GoToCounter">Go to Market</button>
+</section>
+
+<footer id="contact">
+    <p><strong>Contact Us</strong></p>
+    <p>Email: hello@pureaura.example</p>
+    <p>Phone: +1 (555) 123-4567</p>
+    <br>
+    <p>© 2025 Pure Aura. All rights reserved.</p>
+</footer>
+
+<!-- =============================== -->
+<!--            LOGIN MODAL          -->
+<!-- =============================== -->
+@if (ShowLoginModal)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Login</h3>
+
+            <EditForm Model="@Users" OnValidSubmit="@HandleLogin">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label>Username:</label>
+                    <InputText @bind-Value="Users.Username" class="form-control" />
+                    <ValidationMessage For="@(() => Users.Username)" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Password:</label>
+                    <InputText @bind-Value="Users.CPassword" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => Users.CPassword)" />
+                </div>
+
+                <button class="go-btn" type="submit">Submit</button>
+                <button class="go-btn" style="margin-left:10px;background:#777"
+                        @onclick="() => ShowLoginModal = false">
+                    Cancel
+                </button>
+            </EditForm>
+
+            @if (LoginSuccess)
+            {
+                <div class="alert alert-success mt-4">
+                    Hello <strong>@Users.Username</strong>! Login successful.
+                </div>
+            }
         </div>
-    </section>
+    </div>
+}
 
-    <section id="about">
-        <h2>About Pure Aura</h2>
-        <p>
-            Pure Aura creates handcrafted jewelry inspired by minimalist beauty
-            and natural radiance. Each piece is made with intention, using
-            high-quality and sustainable materials.
-        </p>
-    </section>
+<!-- =============================== -->
+<!--             CART MODAL          -->
+<!-- =============================== -->
+@if (ShowCartModal)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Your Cart</h3>
 
-    <section>
-        <button class="go-btn" @onclick="GoToCounter">Go to Counter</button>
-    </section>
+            @if (Cart.Count == 0)
+            {
+                <p>Your cart is empty.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in Cart)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            }
 
-    <footer id="contact">
-        <p><strong>Contact Us</strong></p>
-        <p>Email: hello@pureaura.example</p>
-        <p>Phone: +1 (555) 123-4567</p>
-        <br>
-        <p>© 2025 Pure Aura. All rights reserved.</p>
-    </footer>
-
-    <section id="login-section">
-        <h2>Login</h2>
-        <button class="go-btn" @onclick="() => ShowLoginModal = true">Open Login</button>
-    </section>
-
-    @if (ShowLoginModal)
-    {
-        <div class="modal-bg">
-            <div class="modal-box">
-                <h3>Login</h3>
-                <EditForm Model="@Users" OnValidSubmit="@HandleSubmit">
-                    <DataAnnotationsValidator />
-
-                    <div class="mb-3">
-                        <label>Username:</label>
-                        <InputText @bind-Value="Users.Username" class="form-control" />
-                        <ValidationMessage For="@(() => Users.Username)" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Password:</label>
-                        <InputText @bind-Value="Users.CPassword" type="password" class="form-control" />
-                        <ValidationMessage For="@(() => Users.CPassword)" />
-                    </div>
-
-                    <button class="go-btn" type="submit">Submit</button>
-                    <button class="go-btn" style="margin-left:10px;background:#777" @onclick="() => ShowLoginModal = false">Cancel</button>
-                </EditForm>
-
-                @if (showSuccess)
-                {
-                    <div class="alert alert-success mt-4">
-                        Hello <strong>@Users.Username</strong>! Login successful.
-                    </div>
-                }
-            </div>
+            <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
         </div>
-    }
+    </div>
+}
 
-    @if (ShowCartModal)
-    {
-        <div class="modal-bg">
-            <div class="modal-box">
-                <h3>Your Cart</h3>
+<!-- =============================== -->
+<!--        PRODUCT DETAILS MODAL    -->
+<!-- =============================== -->
+@if (ShowDetailsModal && SelectedProduct != null)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>@SelectedProduct.Name</h3>
 
-                @if (Cart.Count == 0)
-                {
-                    <p>Your cart is empty.</p>
-                }
-                else
-                {
-                    <ul>
-                        @foreach (var item in Cart)
-                        {
-                            <li>@item</li>
-                        }
-                    </ul>
-                }
+            <div class="placeholder" style="height:180px;">Product Image</div>
 
-                <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
-            </div>
+            <p><strong>Description:</strong> @SelectedProduct.Description</p>
+            <p><strong>Category:</strong> @SelectedProduct.Category</p>
+            <p><strong>Price:</strong> @SelectedProduct.Price</p>
+
+            <button class="go-btn" @onclick="() => AddToCart(SelectedProduct.Name)">Add to Cart</button>
+            <button class="go-btn" style="background:#777; margin-left:10px;"
+                    @onclick="() => ShowDetailsModal = false">
+                Close
+            </button>
         </div>
-    }
+    </div>
+}
 
-    @code {
-    [Inject] NavigationManager Navigation { get; set; } = default!;
-
+@code {
+    // CART DATA
     private List<string> Cart = new();
     private bool ShowCartModal = false;
-    private bool ShowLoginModal = false;
 
-    private bool showSuccess = false;
+    // LOGIN DATA
+    private bool ShowLoginModal = false;
+    private bool LoginSuccess = false;
     private string ErrorMessage = "";
     private UserModel Users = new();
 
-    void AddToCart(string itemName)
+    // SEARCH / FILTER DATA
+    private string SearchText = "";
+    private string SelectedCategory = "";
+
+    // DETAIL MODAL DATA
+    private bool ShowDetailsModal = false;
+    private Product? SelectedProduct;
+
+    // PRODUCT LIST
+    private List<string> Categories = new() { "Necklace", "Ring", "Earrings" };
+
+    private List<Product> Products = new()
     {
-        Cart.Add(itemName);
+        new Product { Name="Luna Necklace", Category="Necklace", Description="Freshwater pearl • gold finish", Price="$149" },
+        new Product { Name="Sol Ring", Category="Ring", Description="Sterling silver • hammered texture", Price="$89" },
+        new Product { Name="Aster Earrings", Category="Earrings", Description="Rose gold minimalist studs", Price="$119" }
+    };
+
+    // FILTERED PRODUCTS
+    private IEnumerable<Product> FilteredProducts =>
+        Products.Where(p =>
+            (string.IsNullOrWhiteSpace(SearchText) ||
+             p.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+             p.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+            &&
+            (string.IsNullOrWhiteSpace(SelectedCategory) ||
+             p.Category == SelectedCategory)
+        );
+
+    // FUNCTIONS
+    void AddToCart(string item)
+    {
+        Cart.Add(item);
     }
 
     void ToggleCartModal()
@@ -367,22 +403,28 @@
         ShowCartModal = !ShowCartModal;
     }
 
+    void OpenDetails(Product p)
+    {
+        SelectedProduct = p;
+        ShowDetailsModal = true;
+    }
+
     void GoToCounter()
     {
         Navigation.NavigateTo("/Market");
     }
 
-    private async Task HandleSubmit()
+    // LOGIN HANDLER
+    private async Task HandleLogin()
     {
-        showSuccess = false;
-        ErrorMessage = "";
+        LoginSuccess = false;
 
         await Conn.OpenAsync();
 
         using var cmd = new NpgsqlCommand(@"
-            SELECT username 
-            FROM Users 
-            WHERE username = @u 
+            SELECT username
+            FROM Users
+            WHERE username = @u
             AND password_hash = crypt(@p, password_hash);
         ", Conn);
 
@@ -392,21 +434,25 @@
         var result = await cmd.ExecuteScalarAsync();
 
         if (result != null)
-        {
-            showSuccess = true;
-        }
+            LoginSuccess = true;
         else
-        {
             ErrorMessage = "Invalid username or password.";
-        }
 
         await Conn.CloseAsync();
     }
 
+    // MODELS
     public class UserModel
     {
         public string Username { get; set; } = "";
         public string CPassword { get; set; } = "";
     }
-}
 
+    public class Product
+    {
+        public string Name { get; set; } = "";
+        public string Category { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Price { get; set; } = "";
+    }
+}
