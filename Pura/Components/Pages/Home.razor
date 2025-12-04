@@ -393,7 +393,7 @@
             using var cmd = new NpgsqlCommand(@"
                 SELECT upassword
                 FROM public.""Users""
-                WHERE username = @u;
+                WHERE lower(username) = lower(@u);
             ", Conn);
 
             cmd.Parameters.AddWithValue("@u", Users.Username);
@@ -486,7 +486,8 @@ WHERE extname = 'pgcrypto';
 sql db/check_users_table.sql
 SELECT table_schema, table_name
 FROM information_schema.tables
-WHERE lower(table_name) = 'users';
+WHERE lower(table_name) LIKE 'Users'
+   OR table_name ILIKE '%users%';
 
 sql db/create_pgcrypto.sql
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
