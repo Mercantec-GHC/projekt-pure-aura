@@ -133,44 +133,11 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    /* ====== Modal Styles ====== */
-    .modal-bg {
-        z-index: 2000;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    /* ===== Review star hover ===== */
+    .star:hover {
+        transform: scale(1.1);
+        transition: 0.1s;
     }
-
-    .modal-box {
-        background: white;
-        padding: 2rem;
-        border-radius: 10px;
-        width: 350px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        margin-bottom: 10px;
-    }
-
-    ul {
-        text-align: left;
-        padding-left: 0;
-    }
-
-        ul li {
-            list-style: none;
-            background: #f5f5f5;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-        }
 </style>
 
 <header>
@@ -266,6 +233,55 @@
         </div>
 
     </div>
+</section>
+
+<!-- ========== CUSTOMER REVIEWS SECTION ========== -->
+<section id="reviews">
+    <h2>Customer Reviews</h2>
+
+    <div class="card">
+        <h3>Write a Review</h3>
+
+        <input class="form-control" placeholder="Your Name" @bind="ReviewName" />
+
+        <label>Rating:</label>
+        <div>
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="star"
+                      style="font-size:28px;cursor:pointer;color:@(i <= ReviewStars ? "#f4b400" : "#ccc")"
+                      @onclick="() => ReviewStars = i">★</span>
+            }
+        </div>
+
+        <textarea class="form-control" style="height:100px"
+                  placeholder="Write your review..."
+                  @bind="ReviewText"></textarea>
+
+        <button class="go-btn" @onclick="SubmitReview">Submit Review</button>
+    </div>
+
+    <h3 style="margin-top:20px;">Recent Reviews</h3>
+
+    @if (Reviews.Count == 0)
+    {
+        <p>No reviews yet — be the first!</p>
+    }
+    else
+    {
+        <div class="grid">
+            @foreach (var r in Reviews)
+            {
+                <div class="card">
+                    <strong>@r.Name</strong>
+                    <div style="color:#f4b400;font-size:20px">
+                        @(new string('★', r.Stars) + new string('☆', 5 - r.Stars))
+                    </div>
+                    <p>@r.Text</p>
+                </div>
+            }
+        </div>
+    }
 </section>
 
 <section id="about">
@@ -488,8 +504,7 @@
         {
             using var cmd = new NpgsqlCommand(@"
                 INSERT INTO Users(username, password_hash)
-                VALUES(@u, crypt(@p, gen_salt('bf')));
-            ", Conn);
+                VALUES(@u, crypt(@p, gen_salt('bf')));", Conn);
 
             cmd.Parameters.AddWithValue("@u", SignupUser.Username);
             cmd.Parameters.AddWithValue("@p", SignupUser.CPassword);
@@ -512,5 +527,37 @@
     {
         public string Username { get; set; } = "";
         public string CPassword { get; set; } = "";
+    }
+
+    // ------------ REVIEWS ------------
+    private class ReviewModel
+    {
+        public string Name { get; set; } = "";
+        public int Stars { get; set; }
+        public string Text { get; set; } = "";
+    }
+
+    private List<ReviewModel> Reviews = new();
+    private string ReviewName = "";
+    private string ReviewText = "";
+    private int ReviewStars = 0;
+
+    void SubmitReview()
+    {
+        if (string.IsNullOrWhiteSpace(ReviewName) ||
+            string.IsNullOrWhiteSpace(ReviewText) ||
+            ReviewStars == 0)
+            return;
+
+        Reviews.Add(new ReviewModel
+        {
+            Name = ReviewName,
+            Stars = ReviewStars,
+            Text = ReviewText
+        });
+
+        ReviewName = "";
+        ReviewText = "";
+        ReviewStars = 0;
     }
 }
