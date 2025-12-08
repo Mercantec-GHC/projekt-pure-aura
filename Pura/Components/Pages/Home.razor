@@ -119,6 +119,20 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
+    /* ===== Wishlist Btn next to Cart ===== */
+    .floating-wishlist {
+        position: fixed;
+        bottom: 20px;
+        right: 130px;
+        background: #d4b79a;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
     /* ====== Modal Styles ====== */
     .modal-bg {
         z-index: 2000;
@@ -171,6 +185,12 @@
     </nav>
 </header>
 
+<!-- Floating Wishlist Button -->
+<div class="floating-wishlist" @onclick="ToggleWishlistModal">
+    Wishlist (@Wishlist.Count)
+</div>
+
+<!-- Floating Cart -->
 <div class="floating-cart" @onclick="ToggleCartModal">
     Cart (@Cart.Count)
 </div>
@@ -205,27 +225,46 @@
 <section id="featured">
     <h2>Featured Jewelry</h2>
     <div class="grid">
+
+        <!-- PRODUCT 1 -->
         <div class="card">
             <div class="placeholder">Product Image</div>
             <h4>Luna Necklace</h4>
             <p>Freshwater pearl • gold finish</p>
             <strong>$149</strong>
             <button class="go-btn" @onclick='() => AddToCart("Luna Necklace")'>Add to Cart</button>
+            <button class="go-btn" style="background:#d4b79a;margin-left:8px"
+                    @onclick='() => AddToWishlist("Luna Necklace")'>
+                ♥ Save
+            </button>
         </div>
+
+        <!-- PRODUCT 2 -->
         <div class="card">
             <div class="placeholder">Product Image</div>
             <h4>Sol Ring</h4>
             <p>Sterling silver • hammered texture</p>
             <strong>$89</strong>
             <button class="go-btn" @onclick='() => AddToCart("Sol Ring")'>Add to Cart</button>
+            <button class="go-btn" style="background:#d4b79a;margin-left:8px"
+                    @onclick='() => AddToWishlist("Sol Ring")'>
+                ♥ Save
+            </button>
         </div>
+
+        <!-- PRODUCT 3 -->
         <div class="card">
             <div class="placeholder">Product Image</div>
             <h4>Aster Earrings</h4>
             <p>Rose gold minimalist studs</p>
             <strong>$119</strong>
             <button class="go-btn" @onclick='() => AddToCart("Aster Earrings")'>Add to Cart</button>
+            <button class="go-btn" style="background:#d4b79a;margin-left:8px"
+                    @onclick='() => AddToWishlist("Aster Earrings")'>
+                ♥ Save
+            </button>
         </div>
+
     </div>
 </section>
 
@@ -242,11 +281,63 @@
     <p><strong>Contact Us</strong></p>
     <p>Email: hello@pureaura.example</p>
     <p>Phone: +1 (555) 123-4567</p>
-    <br>
+    <br />
     <p>© 2025 Pure Aura. All rights reserved.</p>
 </footer>
 
-<!-- ===================== LOGIN MODAL ===================== -->
+<!-- ================= CART MODAL ================= -->
+@if (ShowCartModal)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Your Cart</h3>
+
+            @if (Cart.Count == 0)
+            {
+                <p>Your cart is empty.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in Cart)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            }
+
+            <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
+        </div>
+    </div>
+}
+
+<!-- ================= WISHLIST MODAL ================= -->
+@if (ShowWishlistModal)
+{
+    <div class="modal-bg">
+        <div class="modal-box">
+            <h3>Your Wishlist</h3>
+
+            @if (Wishlist.Count == 0)
+            {
+                <p>No saved items.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in Wishlist)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            }
+
+            <button class="go-btn" @onclick="() => ShowWishlistModal = false">Close</button>
+        </div>
+    </div>
+}
+
+<!-- ================= LOGIN MODAL ================= -->
 @if (ShowLoginModal)
 {
     <div class="modal-bg">
@@ -272,13 +363,16 @@
                 }
 
                 <button class="go-btn" type="submit">Login</button>
-                <button class="go-btn" style="margin-left:10px;background:#777" @onclick="() => ShowLoginModal = false">Cancel</button>
+                <button class="go-btn" style="margin-left:10px;background:#777"
+                        @onclick="() => ShowLoginModal = false">
+                    Cancel
+                </button>
             </EditForm>
         </div>
     </div>
 }
 
-<!-- ===================== SIGNUP MODAL ===================== -->
+<!-- ================= SIGNUP MODAL ================= -->
 @if (ShowSignupModal)
 {
     <div class="modal-bg">
@@ -307,46 +401,35 @@
                 }
 
                 <button class="go-btn" type="submit">Sign Up</button>
-                <button class="go-btn" style="margin-left:10px;background:#777" @onclick="() => ShowSignupModal = false">Cancel</button>
+                <button class="go-btn" style="margin-left:10px;background:#777"
+                        @onclick="() => ShowSignupModal = false">
+                    Cancel
+                </button>
             </EditForm>
         </div>
     </div>
 }
 
-<!-- ===================== CART MODAL ===================== -->
-@if (ShowCartModal)
-{
-    <div class="modal-bg">
-        <div class="modal-box">
-            <h3>Your Cart</h3>
-
-            @if (Cart.Count == 0)
-            {
-                <p>Your cart is empty.</p>
-            }
-            else
-            {
-                <ul>
-                    @foreach (var item in Cart)
-                    {
-                        <li>@item</li>
-                    }
-                </ul>
-            }
-
-            <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
-        </div>
-    </div>
-}
-
 @code {
-    // ----------------- CART -----------------
+    // ------------ CART ------------
     private List<string> Cart = new();
     private bool ShowCartModal = false;
     void AddToCart(string itemName) => Cart.Add(itemName);
     void ToggleCartModal() => ShowCartModal = !ShowCartModal;
 
-    // ----------------- LOGIN -----------------
+    // ------------ WISHLIST ------------
+    private List<string> Wishlist = new();
+    private bool ShowWishlistModal = false;
+
+    void AddToWishlist(string itemName)
+    {
+        if (!Wishlist.Contains(itemName))
+            Wishlist.Add(itemName);
+    }
+
+    void ToggleWishlistModal() => ShowWishlistModal = !ShowWishlistModal;
+
+    // ------------ LOGIN ------------
     private bool ShowLoginModal = false;
     private UserModel LoginUser = new();
     private bool LoginSuccess = false;
@@ -382,7 +465,7 @@
         }
     }
 
-    // ----------------- SIGNUP -----------------
+    // ------------ SIGNUP ------------
     private bool ShowSignupModal = false;
     private UserModel SignupUser = new();
     private string SignupConfirm = "";
@@ -424,7 +507,7 @@
         await Conn.CloseAsync();
     }
 
-    // ----------------- USER MODEL -----------------
+    // ------------ USER MODEL ------------
     public class UserModel
     {
         public string Username { get; set; } = "";
