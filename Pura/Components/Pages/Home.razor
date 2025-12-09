@@ -7,14 +7,20 @@
 <PageTitle>Home - Pure Aura</PageTitle>
 
 <style>
-    /* ====== General Styles ====== */
+    /* ===== Global Styles ===== */
     body {
-        font-family: Inter, sans-serif;
+        font-family: "Inter", sans-serif;
         margin: 0;
-        background: #faf8f6;
-        color: #222;
+        background: #f8f5f2;
+        color: #2e2e2e;
     }
 
+    h1, h2, h3, h4 {
+        color: #b89472;
+        letter-spacing: 0.5px;
+    }
+
+    /* ===== Header ===== */
     header {
         position: sticky;
         top: 0;
@@ -23,121 +29,179 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #ffffffcc;
-        backdrop-filter: blur(6px);
-        border-bottom: 1px solid #e5e5e5;
+        background: #ffffffd9;
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid #e6e1dc;
     }
 
     .logo {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         font-weight: 700;
-        color: #b08b6c;
+        color: #b89472;
+        letter-spacing: 1px;
     }
 
     nav a {
         margin-left: 1rem;
         text-decoration: none;
-        color: #222;
+        color: #2e2e2e;
         font-weight: 500;
-        cursor: pointer;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        transition: 0.2s;
     }
 
+        nav a:hover {
+            background: #e9e3df;
+        }
+
+    /* ===== Hero ===== */
     .hero {
-        padding: 3rem 2rem;
+        padding: 4rem 2rem;
         text-align: center;
     }
 
         .hero h1 {
             margin: 0;
-            font-size: 3rem;
-            color: #b08b6c;
+            font-size: 3.2rem;
         }
 
     .placeholder {
         width: 100%;
         height: 250px;
-        background: #ddd;
-        border-radius: 10px;
+        background: #e5e2df;
+        border-radius: 14px;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #777;
+        color: #8f8b88;
         font-size: 1.1rem;
         margin-bottom: 1rem;
+        transition: 0.25s;
     }
 
-    section {
-        padding: 2rem;
-    }
-
+    /* ===== Cards & Layout ===== */
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+        gap: 1.5rem;
     }
 
     .card {
-        background: white;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    footer {
-        text-align: center;
-        padding: 2rem;
         background: #fff;
-        border-top: 1px solid #e5e5e5;
-        margin-top: 2rem;
+        padding: 1.4rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        transition: 0.25s;
     }
 
+    /* ===== Buttons ===== */
     .go-btn {
-        padding: 12px 25px;
-        background: #b08b6c;
+        padding: 10px 20px;
+        background: #b89472;
         color: white;
         border: none;
-        border-radius: 8px;
-        font-size: 1rem;
+        border-radius: 25px;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: 0.2s;
+        transition: 0.25s;
     }
 
-        .go-btn:hover {
-            background: #957558;
+    .wishlist-btn {
+        padding: 10px 16px;
+        background: #dfc8b3;
+        color: #5e4a39;
+        border: none;
+        border-radius: 25px;
+        margin-left: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.25s;
+    }
+
+    /* ===== Floating Round Icon Buttons ===== */
+    .floating-icon {
+        position: fixed;
+        bottom: 20px;
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 26px;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        transition: 0.25s;
+        font-weight: bold;
+    }
+
+    .cart-btn {
+        right: 20px;
+        background: #b89472;
+    }
+
+        .cart-btn:hover {
+            background: #a88361;
+            transform: translateY(-3px);
         }
 
-    .floating-cart {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #b08b6c;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    /* ===== Wishlist Btn next to Cart ===== */
-    .floating-wishlist {
-        position: fixed;
-        bottom: 20px;
-        right: 130px;
+    .wishlist-btn-floating {
+        right: 100px;
         background: #d4b79a;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    /* ===== Review star hover ===== */
+        .wishlist-btn-floating:hover {
+            background: #c6a88f;
+            transform: translateY(-3px);
+        }
+
+    /* ===== Modals ===== */
+    .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(3px);
+        z-index: 2000;
+    }
+
+    .modal-box {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 14px;
+        width: 90%;
+        max-width: 420px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        animation: fadeUp 0.2s ease-out;
+    }
+
+    /* ===== Reviews (Better Spacing) ===== */
+    #reviews {
+        padding-top: 1rem;
+    }
+
+    .review-card {
+        padding: 1.4rem;
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+        .review-card strong {
+            font-size: 1.1rem;
+        }
+
     .star:hover {
-        transform: scale(1.1);
+        transform: scale(1.15);
         transition: 0.1s;
     }
+
 </style>
 
 <header>
@@ -152,45 +216,60 @@
     </nav>
 </header>
 
-<!-- Floating Wishlist Button -->
-<div class="floating-wishlist" @onclick="ToggleWishlistModal">
-    Wishlist (@Wishlist.Count)
+
+
+<!-- ================= FLOATING ROUND BUTTONS ================= -->
+<div class="floating-icon wishlist-btn-floating" @onclick="ToggleWishlistModal">
+    ❤
 </div>
 
-<!-- Floating Cart -->
-<div class="floating-cart" @onclick="ToggleCartModal">
-    Cart (@Cart.Count)
+<div class="floating-icon cart-btn" @onclick="ToggleCartModal">
+    🛒
 </div>
 
+
+
+<!-- ================= HERO ================= -->
 <section class="hero">
     <h1>Pure Aura</h1>
     <p>Timeless handcrafted jewelry designed to shine with your natural aura.</p>
     <div class="placeholder">Hero Image Placeholder</div>
 </section>
 
+
+<!-- ================= COLLECTIONS ================= -->
 <section id="collections">
     <h2>Collections</h2>
+
     <div class="grid">
+
         <div class="card">
             <div class="placeholder">Image Placeholder</div>
             <h3>Everyday Essentials</h3>
             <p>Sleek minimal pieces for daily wear.</p>
         </div>
+
         <div class="card">
             <div class="placeholder">Image Placeholder</div>
             <h3>Bridal Glow</h3>
             <p>Elegant jewelry for special moments.</p>
         </div>
+
         <div class="card">
             <div class="placeholder">Image Placeholder</div>
             <h3>Statement Gems</h3>
             <p>Bold pieces that stand out.</p>
         </div>
+
     </div>
 </section>
 
+
+
+<!-- ================= FEATURED ================= -->
 <section id="featured">
     <h2>Featured Jewelry</h2>
+
     <div class="grid">
 
         <!-- PRODUCT 1 -->
@@ -198,12 +277,10 @@
             <div class="placeholder">Product Image</div>
             <h4>Luna Necklace</h4>
             <p>Freshwater pearl • gold finish</p>
-            <strong>$149</strong>
+            <strong>$149</strong><br><br>
+
             <button class="go-btn" @onclick='() => AddToCart("Luna Necklace")'>Add to Cart</button>
-            <button class="go-btn" style="background:#d4b79a;margin-left:8px"
-                    @onclick='() => AddToWishlist("Luna Necklace")'>
-                ♥ Save
-            </button>
+            <button class="wishlist-btn" @onclick='() => AddToWishlist("Luna Necklace")'>♥ Save</button>
         </div>
 
         <!-- PRODUCT 2 -->
@@ -211,12 +288,10 @@
             <div class="placeholder">Product Image</div>
             <h4>Sol Ring</h4>
             <p>Sterling silver • hammered texture</p>
-            <strong>$89</strong>
+            <strong>$89</strong><br><br>
+
             <button class="go-btn" @onclick='() => AddToCart("Sol Ring")'>Add to Cart</button>
-            <button class="go-btn" style="background:#d4b79a;margin-left:8px"
-                    @onclick='() => AddToWishlist("Sol Ring")'>
-                ♥ Save
-            </button>
+            <button class="wishlist-btn" @onclick='() => AddToWishlist("Sol Ring")'>♥ Save</button>
         </div>
 
         <!-- PRODUCT 3 -->
@@ -224,18 +299,18 @@
             <div class="placeholder">Product Image</div>
             <h4>Aster Earrings</h4>
             <p>Rose gold minimalist studs</p>
-            <strong>$119</strong>
+            <strong>$119</strong><br><br>
+
             <button class="go-btn" @onclick='() => AddToCart("Aster Earrings")'>Add to Cart</button>
-            <button class="go-btn" style="background:#d4b79a;margin-left:8px"
-                    @onclick='() => AddToWishlist("Aster Earrings")'>
-                ♥ Save
-            </button>
+            <button class="wishlist-btn" @onclick='() => AddToWishlist("Aster Earrings")'>♥ Save</button>
         </div>
 
     </div>
 </section>
 
-<!-- ========== CUSTOMER REVIEWS SECTION ========== -->
+
+
+<!-- ================= REVIEWS ================= -->
 <section id="reviews">
     <h2>Customer Reviews</h2>
 
@@ -272,9 +347,9 @@
         <div class="grid">
             @foreach (var r in Reviews)
             {
-                <div class="card">
+                <div class="review-card">
                     <strong>@r.Name</strong>
-                    <div style="color:#f4b400;font-size:20px">
+                    <div style="color:#f4b400;font-size:20px;margin:6px 0;">
                         @(new string('★', r.Stars) + new string('☆', 5 - r.Stars))
                     </div>
                     <p>@r.Text</p>
@@ -284,6 +359,9 @@
     }
 </section>
 
+
+
+<!-- ================= ABOUT ================= -->
 <section id="about">
     <h2>About Pure Aura</h2>
     <p>
@@ -293,6 +371,9 @@
     </p>
 </section>
 
+
+
+<!-- ================= CONTACT ================= -->
 <footer id="contact">
     <p><strong>Contact Us</strong></p>
     <p>Email: hello@pureaura.example</p>
@@ -300,6 +381,8 @@
     <br />
     <p>© 2025 Pure Aura. All rights reserved.</p>
 </footer>
+
+
 
 <!-- ================= CART MODAL ================= -->
 @if (ShowCartModal)
@@ -327,6 +410,8 @@
     </div>
 }
 
+
+
 <!-- ================= WISHLIST MODAL ================= -->
 @if (ShowWishlistModal)
 {
@@ -353,12 +438,15 @@
     </div>
 }
 
+
+
 <!-- ================= LOGIN MODAL ================= -->
 @if (ShowLoginModal)
 {
     <div class="modal-bg">
         <div class="modal-box">
             <h3>Login</h3>
+
             <EditForm Model="@LoginUser" OnValidSubmit="@HandleLogin">
                 <DataAnnotationsValidator />
 
@@ -388,12 +476,15 @@
     </div>
 }
 
+
+
 <!-- ================= SIGNUP MODAL ================= -->
 @if (ShowSignupModal)
 {
     <div class="modal-bg">
         <div class="modal-box">
             <h3>Sign Up</h3>
+
             <EditForm Model="@SignupUser" OnValidSubmit="@HandleSignup">
                 <DataAnnotationsValidator />
 
@@ -426,14 +517,15 @@
     </div>
 }
 
+
 @code {
-    // ------------ CART ------------
+    /* ---------------- CART ---------------- */
     private List<string> Cart = new();
     private bool ShowCartModal = false;
     void AddToCart(string itemName) => Cart.Add(itemName);
     void ToggleCartModal() => ShowCartModal = !ShowCartModal;
 
-    // ------------ WISHLIST ------------
+    /* ---------------- WISHLIST ---------------- */
     private List<string> Wishlist = new();
     private bool ShowWishlistModal = false;
 
@@ -445,7 +537,7 @@
 
     void ToggleWishlistModal() => ShowWishlistModal = !ShowWishlistModal;
 
-    // ------------ LOGIN ------------
+    /* ---------------- LOGIN ---------------- */
     private bool ShowLoginModal = false;
     private UserModel LoginUser = new();
     private bool LoginSuccess = false;
@@ -481,7 +573,7 @@
         }
     }
 
-    // ------------ SIGNUP ------------
+    /* ---------------- SIGNUP ---------------- */
     private bool ShowSignupModal = false;
     private UserModel SignupUser = new();
     private string SignupConfirm = "";
@@ -522,14 +614,14 @@
         await Conn.CloseAsync();
     }
 
-    // ------------ USER MODEL ------------
+    /* ---------------- MODELS ---------------- */
     public class UserModel
     {
         public string Username { get; set; } = "";
         public string CPassword { get; set; } = "";
     }
 
-    // ------------ REVIEWS ------------
+    /* ---------------- REVIEWS ---------------- */
     private class ReviewModel
     {
         public string Name { get; set; } = "";
