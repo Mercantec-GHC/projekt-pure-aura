@@ -1,19 +1,184 @@
 ﻿@page "/Market"
 @rendermode InteractiveServer
 
-<PageTitle>Market</PageTitle>
+<PageTitle>Jewelry Marketplace</PageTitle>
 
-<h1>Market</h1>
+<style>
+    /* ================= MARKETPLACE GREEN THEME ================= */
+    :root {
+        --primary-green: #28a745;
+        --primary-green-light: #4caf7f;
+        --bg-light: #f1f7f2;
+        --bg-white: #ffffff;
+        --text-dark: #1b1b1b;
+        --text-muted: #555;
+        --border: #d0d0d0;
+    }
 
-<p role="status">Current count: @currentCount</p>
+    body {
+        margin: 0;
+        font-family: "Inter", system-ui;
+        background: var(--bg-light);
+        color: var(--text-dark);
+    }
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    h1 {
+        margin: 1rem;
+        color: var(--primary-green);
+    }
+
+    .market-container {
+        display: flex;
+        max-width: 1200px;
+        margin: 1rem auto;
+        gap: 1rem;
+    }
+
+    /* ================= SIDEBAR ================= */
+    .sidebar {
+        width: 220px;
+        background: var(--bg-white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        flex-shrink: 0;
+    }
+
+        .sidebar h3 {
+            margin-top: 0;
+            color: var(--primary-green);
+            font-size: 1.1rem;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.4rem 0;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+            .sidebar a:hover {
+                color: var(--primary-green-light);
+            }
+
+    /* ================= ITEM GRID ================= */
+    .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+        flex-grow: 1;
+    }
+
+    .item-card {
+        background: var(--bg-white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+    .item-image {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        background: #ddd;
+    }
+
+    .item-info {
+        padding: 0.6rem 0.8rem;
+        flex-grow: 1;
+    }
+
+    .item-price {
+        font-weight: bold;
+        color: var(--primary-green);
+        margin-top: 0.4rem;
+    }
+
+    /* ================= BUTTON ================= */
+    .btn-primary {
+        background: var(--primary-green);
+        border: none;
+        padding: 0.5rem 1rem;
+        color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .btn-primary:hover {
+            background: var(--primary-green-light);
+        }
+</style>
+
+<h1>Jewelry Marketplace</h1>
+
+<div class="market-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Browse</h3>
+        <a href="#">All Items</a>
+        <a href="#">New Arrivals</a>
+        <a href="#">Best Sellers</a>
+        <a href="#">On Sale</a>
+
+        <h3>Filters</h3>
+        <a href="#">Price: Low to High</a>
+        <a href="#">Price: High to Low</a>
+
+        <h3>Categories</h3>
+        <a href="#">Necklaces</a>
+        <a href="#">Rings</a>
+        <a href="#">Earrings</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Watches</a>
+    </div>
+
+    <!-- Item Grid -->
+    <div class="items-grid">
+        @foreach (var item in MarketplaceItems)
+        {
+            <div class="item-card">
+                <img src="@item.ImageUrl" class="item-image" alt="@item.Title" />
+                <div class="item-info">
+                    <strong>@item.Title</strong>
+                    <p class="text-muted">@item.Description</p>
+                    <div class="item-price">@item.Price</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    private List<MarketplaceItem> MarketplaceItems = new()
     {
-        currentCount++;
+        new MarketplaceItem { Title = "Luna Necklace", Description = "Freshwater pearls, gold finish", Price = "€149", ImageUrl = "/images/luna-necklace.png" },
+        new MarketplaceItem { Title = "Sol Ring", Description = "Sterling silver, hammered", Price = "€89", ImageUrl = "/images/sol-ring.png" },
+        new MarketplaceItem { Title = "Aster Earrings", Description = "Rose gold minimalist studs", Price = "€119", ImageUrl = "/images/aster-earrings.png" },
+        new MarketplaceItem { Title = "Celeste Bracelet", Description = "Gold plated with sapphires", Price = "€179", ImageUrl = "/images/celeste-bracelet.png" },
+        new MarketplaceItem { Title = "Orion Watch", Description = "Leather strap, silver dial", Price = "€299", ImageUrl = "/images/orion-watch.png" },
+        new MarketplaceItem { Title = "Nova Ring", Description = "Diamond solitaire ring", Price = "€399", ImageUrl = "/images/nova-ring.png" },
+        new MarketplaceItem { Title = "Aurora Earrings", Description = "Emerald and gold drops", Price = "€199", ImageUrl = "/images/aurora-earrings.png" },
+        new MarketplaceItem { Title = "Stella Necklace", Description = "Silver chain with pendant", Price = "€129", ImageUrl = "/images/stella-necklace.png" },
+        new MarketplaceItem { Title = "Celina Bracelet", Description = "Rose gold chain bracelet", Price = "€149", ImageUrl = "/images/celina-bracelet.png" },
+        new MarketplaceItem { Title = "Gemini Ring", Description = "Twin stone design, silver", Price = "€219", ImageUrl = "/images/gemini-ring.png" }
+    };
+
+    private class MarketplaceItem
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Price { get; set; } = "";
+        public string ImageUrl { get; set; } = "";
     }
 }
