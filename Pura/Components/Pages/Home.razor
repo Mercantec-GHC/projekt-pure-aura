@@ -7,61 +7,50 @@
 <PageTitle>Pure Aura – Luxury Jewelry</PageTitle>
 
 <style>
-    /* ================= DARK LUXURY THEME ================= */
+    /* ================= DARK GREY LUXURY THEME ================= */
     :root {
-        --black: #0b0b0c;
-        --deep: #111113;
+        --bg-dark: #1e1e1e;
+        --bg-mid: #2b2b2b;
+        --bg-light: #3a3a3a;
         --gold: #d4af37;
         --gold-soft: #c9a53a;
         --text: #e8e3d8;
-        --mid: #1a1a1c;
-        --card: #141416;
-        --soft-border: rgba(255,255,255,0.06);
+        --text-muted: #aaaaaa;
+        --border: rgba(255,255,255,0.08);
         --glow: 0 0 20px rgba(212,175,55,0.25);
-    }
-
-    /* Reset + base */
-    * {
-        box-sizing: border-box;
     }
 
     body {
         margin: 0;
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-        background: var(--black);
+        font-family: "Inter", system-ui;
+        background: var(--bg-dark);
         color: var(--text);
         overflow-x: hidden;
     }
 
     a {
         color: inherit;
+        text-decoration: none;
     }
 
     h1, h2, h3, h4 {
         color: var(--gold);
-        letter-spacing: 0.5px;
         font-weight: 600;
-        margin: 0 0 .6rem 0;
-    }
-
-    p {
-        margin: 0 0 1rem 0;
-        color: #c9c5ba;
+        margin-bottom: .6rem;
     }
 
     /* ================= HEADER ================= */
     header {
         position: fixed;
-        top: 0;
         width: 100%;
+        top: 0;
         padding: 1rem 2rem;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--soft-border);
+        justify-content: center;
+        background: var(--bg-mid);
+        border-bottom: 1px solid var(--border);
         z-index: 1000;
+        border-radius: 0 0 12px 12px;
     }
 
     .logo {
@@ -72,210 +61,78 @@
         letter-spacing: 2px;
     }
 
-    .menu-icon {
-        font-size: 30px;
-        cursor: pointer;
-        color: var(--gold);
-        transition: 0.25s;
-        user-select: none;
-    }
-
-        .menu-icon:hover {
-            transform: scale(1.08);
-        }
-
-    /* ================= DRAWER NAV ================= */
-    .drawer-bg {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(6px);
-        z-index: 1500;
-        animation: fadeIn 0.25s ease-out;
-    }
-
-    .drawer {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 300px;
-        max-width: 85%;
-        height: 100%;
-        background: linear-gradient(180deg, #0f0f10, #111113);
-        border-right: 1px solid var(--soft-border);
-        padding: 2rem 1.6rem;
-        animation: slideIn 0.32s ease-out;
-        box-shadow: 6px 0 30px rgba(0,0,0,0.5);
-        z-index: 1600;
-        display: flex;
-        flex-direction: column;
-    }
-
-        .drawer h3 {
-            color: var(--gold);
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-        }
-
-        .drawer a {
-            display: block;
-            color: var(--text);
-            text-decoration: none;
-            padding: 0.9rem 0;
-            font-size: 1.05rem;
-            transition: 0.18s;
-            border-bottom: 1px solid rgba(255,255,255,0.02);
-        }
-
-            .drawer a:hover {
-                color: var(--gold);
-                padding-left: 8px;
-            }
-
-        .drawer .spacer {
-            flex: 1;
-        }
-
-    keyframes slideIn {
-        from {
-            transform: translateX(-100%);
-        }
-        to {
-            transform: translateX(0);
-        }
-    }
-    keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    /* ================= PAGE LAYOUT ================= */
     main {
-        padding: 6.5rem 2rem 3rem; /* account for fixed header */
+        padding: 6rem 2rem 3rem;
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    /* HERO */
+    /* ================= HERO ================= */
     .hero {
         padding: 3rem 1rem 2rem;
         text-align: center;
-        background: radial-gradient(circle at center, #19191a 0%, #0b0b0c 90%);
+        background: var(--bg-mid);
+        border: 1px solid var(--border);
         border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.02);
-        box-shadow: inset 0 0 120px rgba(212,175,55,0.03);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        margin-bottom: 2rem;
     }
 
         .hero h1 {
-            font-size: 3.4rem;
+            font-size: 3rem;
             text-shadow: var(--glow);
         }
 
         .hero p {
-            max-width: 640px;
-            margin: 0.4rem auto 1.2rem;
-            font-size: 1.15rem;
-            color: #c9c5ba;
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
 
-    .hero-visual {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1.3rem;
-        flex-wrap: wrap;
-    }
-
     .placeholder {
-        width: 100%;
-        max-width: 880px;
-        height: 300px;
-        background: linear-gradient(135deg, #1e1e21, #141416);
-        border: 1px solid rgba(255,255,255,0.03);
+        margin-top: 1.3rem;
+        height: 280px;
         border-radius: 16px;
+        background: linear-gradient(135deg,#2f2f2f,#222);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #777;
-        font-size: 1.05rem;
+        color: var(--text-muted);
     }
 
     /* ================= GRID & CARDS ================= */
-    section {
-        margin-top: 2rem;
-    }
-
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-        .section-header h2 {
-            margin: 0;
-            font-size: 1.6rem;
-        }
-
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+        grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
         gap: 1.6rem;
-        margin-top: 0.8rem;
+        margin-top: 1rem;
     }
 
     .card {
-        background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
-        border: 1px solid var(--soft-border);
+        background: var(--bg-mid);
+        border: 1px solid var(--border);
         padding: 1.4rem;
         border-radius: 14px;
-        transition: 260ms ease;
-        box-shadow: 0 0 20px rgba(0,0,0,0.35);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        transition: transform 0.2s, background 0.2s;
     }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 0 40px rgba(212,175,55,0.12);
+            transform: translateY(-4px);
+            background: var(--bg-light);
         }
 
     .product-visual {
         height: 180px;
         border-radius: 12px;
-        background: linear-gradient(135deg,#151516,#1b191a);
-        border: 1px solid rgba(255,255,255,0.02);
+        background: linear-gradient(135deg,#2c2c2c,#3b3b3b);
+        border: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #777;
+        color: var(--text-muted);
         margin-bottom: 1rem;
-    }
-
-    .price-row {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-top: .6rem;
-    }
-
-        .price-row strong {
-            font-size: 1.05rem;
-            color: var(--text);
-        }
-
-    .card-actions {
-        margin-top: 1rem;
-        display: flex;
-        gap: .6rem;
-        flex-wrap: wrap;
+        font-weight: 500;
     }
 
     /* ================= BUTTONS ================= */
@@ -283,32 +140,32 @@
         padding: 10px 18px;
         background: var(--gold);
         color: #000;
+        border-radius: 25px;
         border: none;
-        border-radius: 28px;
-        cursor: pointer;
         font-weight: 700;
-        transition: 160ms;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 0.5rem;
     }
 
         .go-btn:hover {
             background: var(--gold-soft);
-            box-shadow: var(--glow);
-            transform: translateY(-3px);
         }
 
     .wishlist-btn {
         padding: 10px 14px;
         background: transparent;
+        border: 1px solid var(--gold);
         color: var(--gold);
-        border: 1px solid rgba(212,175,55,0.18);
-        border-radius: 28px;
-        cursor: pointer;
+        border-radius: 25px;
         font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 0.5rem;
     }
 
         .wishlist-btn:hover {
-            background: rgba(212,175,55,0.04);
-            transform: translateY(-3px);
+            background: rgba(212,175,55,0.08);
         }
 
     /* ================= FLOATING ICONS ================= */
@@ -323,26 +180,28 @@
         justify-content: center;
         font-size: 26px;
         cursor: pointer;
-        box-shadow: var(--glow);
-        transition: 0.2s;
         z-index: 1400;
+        background: var(--bg-mid);
+        border: 1px solid var(--border);
+        transition: transform 0.2s, background 0.2s;
     }
+
+        .floating-icon:hover {
+            transform: scale(1.1);
+            background: var(--bg-light);
+        }
 
     .cart-btn {
         right: 20px;
         background: var(--gold);
         color: #000;
+        border: none;
     }
 
     .wishlist-btn-floating {
         right: 96px;
-        background: transparent;
         border: 2px solid var(--gold);
-        color: var,--gold);
-    }
-
-    .floating-icon:hover {
-        transform: translateY(-4px);
+        color: var(--gold);
     }
 
     /* ================= MODALS ================= */
@@ -350,71 +209,45 @@
         position: fixed;
         inset: 0;
         background: rgba(0,0,0,0.75);
-        backdrop-filter: blur(8px);
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         z-index: 2000;
     }
 
     .modal-box {
-        background: linear-gradient(180deg,#0f0f10,#101012);
+        background: var(--bg-mid);
+        border: 1px solid var(--border);
         padding: 1.6rem;
-        border-radius: 12px;
-        width: 92%;
+        width: 90%;
         max-width: 480px;
-        border: 1px solid var(--soft-border);
-        box-shadow: 0 10px 50px rgba(0,0,0,0.6);
+        border-radius: 12px;
     }
 
     .form-control {
         width: 100%;
-        padding: 0.6rem 0.8rem;
-        margin: 0.6rem 0 0.8rem 0;
+        padding: .6rem .8rem;
         border-radius: 8px;
-        background: #0b0b0c;
-        border: 1px solid rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        background: var(--bg-dark);
         color: var(--text);
+        margin-bottom: .8rem;
     }
 
-    /* REVIEWS */
-    .review-card {
-        background: linear-gradient(180deg,#121214,#0f0f10);
-        border: 1px solid var(--soft-border);
-        border-radius: 12px;
-        padding: 1rem;
-        box-shadow: 0 6px 30px rgba(0,0,0,0.45);
-    }
-
-    .star:hover {
-        transform: scale(1.1);
-        transition: 0.1s;
-        cursor: pointer;
-    }
-
+    /* ================= FOOTER ================= */
     footer {
-        text-align: center;
-        padding: 2rem 1rem;
         margin-top: 2rem;
-        background: transparent;
-        border-top: 1px solid var(--soft-border);
-    }
-
-    /* Small screens tweak */
-    media (max-width: 640px) {
-        .hero h1 {
-            font-size: 2.4rem;
-        }
-
-        header {
-            padding: 0.8rem 1rem;
-        }
+        padding: 2rem 1rem;
+        text-align: center;
+        background: var(--bg-mid);
+        border-top: 1px solid var(--border);
+        border-radius: 12px;
     }
 </style>
 
 <header>
     <div class="logo">Pure Aura</div>
-    <div class="menu-icon" title="Open menu" @onclick="() => DrawerOpen = true">☰</div>
+    <div class="menu-icon" @onclick="() => DrawerOpen = true">☰</div>
 </header>
 
 @if (DrawerOpen)
@@ -422,7 +255,7 @@
     <div class="drawer-bg" @onclick="() => DrawerOpen = false"></div>
 
     <div class="drawer" @onclick:stopPropagation>
-        <h3>Pure Aura</h3>
+        <h3 style="color:var(--gold);margin-bottom:1rem;">Navigation</h3>
 
         <a href="#collections" @onclick="() => DrawerOpen = false">Collections</a>
         <a href="#featured" @onclick="() => DrawerOpen = false">Featured</a>
@@ -430,7 +263,7 @@
         <a href="#about" @onclick="() => DrawerOpen = false">About</a>
         <a href="#contact" @onclick="() => DrawerOpen = false">Contact</a>
 
-        <div class="spacer"></div>
+        <div style="flex:1"></div>
 
         <a @onclick="() => { ShowLoginModal = true; DrawerOpen = false; }">Login</a>
         <a @onclick="() => { ShowSignupModal = true; DrawerOpen = false; }">Sign Up</a>
@@ -439,158 +272,112 @@
 
 <main>
     <!-- HERO -->
-    <section class="hero" aria-label="Hero">
+    <section class="hero">
         <h1>Pure Aura</h1>
-        <p>Dark Luxury — Timeless handcrafted jewelry designed to shine in the evening light.</p>
-
-        <div class="hero-visual">
-            <div class="placeholder" role="img" aria-label="Hero visual">
-                Hero Image Placeholder — use a moody product photo here
-            </div>
-        </div>
+        <p>Dark Luxury — handcrafted jewelry made to shine in any light.</p>
+        <div class="placeholder">Hero Image Placeholder</div>
     </section>
 
     <!-- COLLECTIONS -->
-    <section id="collections" aria-labelledby="collections-heading">
-        <div class="section-header">
-            <h2 id="collections-heading">Collections</h2>
-        </div>
+    <section id="collections">
+        <h2>Collections</h2>
 
         <div class="grid">
             <div class="card">
-                <div class="product-visual">Image Placeholder</div>
-                <div>
-                    <h4>Everyday Essentials</h4>
-                    <p>Sleek minimal pieces for daily wear.</p>
-                </div>
+                <div class="product-visual">Image</div>
+                <h4>Everyday Essentials</h4>
+                <p>Minimal pieces for daily elegance.</p>
             </div>
 
             <div class="card">
-                <div class="product-visual">Image Placeholder</div>
-                <div>
-                    <h4>Bridal Glow</h4>
-                    <p>Elegant jewelry for special moments.</p>
-                </div>
+                <div class="product-visual">Image</div>
+                <h4>Bridal Glow</h4>
+                <p>Refined jewelry for your special day.</p>
             </div>
 
             <div class="card">
-                <div class="product-visual">Image Placeholder</div>
-                <div>
-                    <h4>Statement Gems</h4>
-                    <p>Bold pieces that stand out.</p>
-                </div>
+                <div class="product-visual">Image</div>
+                <h4>Statement Gems</h4>
+                <p>Bold gems that make an impact.</p>
             </div>
         </div>
     </section>
 
     <!-- FEATURED -->
-    <section id="featured" aria-labelledby="featured-heading">
-        <div class="section-header">
-            <h2 id="featured-heading">Featured Jewelry</h2>
-        </div>
+    <section id="featured">
+        <h2>Featured Jewelry</h2>
 
         <div class="grid">
-            <!-- PRODUCT 1 -->
             <div class="card">
                 <div class="product-visual">Luna Necklace</div>
-                <div>
-                    <h4>Luna Necklace</h4>
-                    <p>Freshwater pearl • gold finish</p>
+                <h4>Luna Necklace</h4>
+                <p>Freshwater pearl • gold finish</p>
+                <strong>$149</strong>
 
-                    <div class="price-row">
-                        <strong>$149</strong>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="go-btn" @onclick='() => AddToCart("Luna Necklace")'>Add to Cart</button>
-                        <button class="wishlist-btn" @onclick='() => AddToWishlist("Luna Necklace")'>♥ Save</button>
-                    </div>
-                </div>
+                <button class="go-btn" @onclick='() => AddToCart("Luna Necklace")'>Add to Cart</button>
+                <button class="wishlist-btn" @onclick='() => AddToWishlist("Luna Necklace")'>♥ Save</button>
             </div>
 
-            <!-- PRODUCT 2 -->
             <div class="card">
                 <div class="product-visual">Sol Ring</div>
-                <div>
-                    <h4>Sol Ring</h4>
-                    <p>Sterling silver • hammered texture</p>
+                <h4>Sol Ring</h4>
+                <p>Sterling silver • hammered texture</p>
+                <strong>$89</strong>
 
-                    <div class="price-row">
-                        <strong>$89</strong>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="go-btn" @onclick='() => AddToCart("Sol Ring")'>Add to Cart</button>
-                        <button class="wishlist-btn" @onclick='() => AddToWishlist("Sol Ring")'>♥ Save</button>
-                    </div>
-                </div>
+                <button class="go-btn" @onclick='() => AddToCart("Sol Ring")'>Add to Cart</button>
+                <button class="wishlist-btn" @onclick='() => AddToWishlist("Sol Ring")'>♥ Save</button>
             </div>
 
-            <!-- PRODUCT 3 -->
             <div class="card">
                 <div class="product-visual">Aster Earrings</div>
-                <div>
-                    <h4>Aster Earrings</h4>
-                    <p>Rose gold minimalist studs</p>
+                <h4>Aster Earrings</h4>
+                <p>Rose gold minimalist studs</p>
+                <strong>$119</strong>
 
-                    <div class="price-row">
-                        <strong>$119</strong>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="go-btn" @onclick='() => AddToCart("Aster Earrings")'>Add to Cart</button>
-                        <button class="wishlist-btn" @onclick='() => AddToWishlist("Aster Earrings")'>♥ Save</button>
-                    </div>
-                </div>
+                <button class="go-btn" @onclick='() => AddToCart("Aster Earrings")'>Add to Cart</button>
+                <button class="wishlist-btn" @onclick='() => AddToWishlist("Aster Earrings")'>♥ Save</button>
             </div>
         </div>
     </section>
 
     <!-- REVIEWS -->
-    <section id="reviews" aria-labelledby="reviews-heading">
-        <div class="section-header">
-            <h2 id="reviews-heading">Customer Reviews</h2>
-        </div>
+    <section id="reviews">
+        <h2>Customer Reviews</h2>
 
-        <div class="card" style="margin-bottom:1rem;">
+        <div class="card" style="margin-bottom:1.2rem;">
             <h3>Write a Review</h3>
 
             <input class="form-control" placeholder="Your Name" @bind="ReviewName" />
 
-            <label style="display:block;margin-top:.4rem;">Rating:</label>
-            <div style="margin:0.4rem 0;">
+            <div style="margin:.4rem 0;">
                 @for (int i = 1; i <= 5; i++)
                 {
                     <span class="star"
                           style="font-size:24px;cursor:pointer;color:@(i <= ReviewStars ? "#f4b400" : "#444");margin-right:6px;"
-                          @onclick="() => ReviewStars = i">★</span>
+                          @onclick="() => ReviewStars = i">
+                        ★
+                    </span>
                 }
             </div>
 
-            <textarea class="form-control" style="height:110px"
-                      placeholder="Write your review..."
-                      @bind="ReviewText"></textarea>
+            <textarea class="form-control" style="height:100px" placeholder="Write your review..." @bind="ReviewText"></textarea>
 
             <button class="go-btn" @onclick="SubmitReview">Submit Review</button>
         </div>
 
-        <h3 style="margin-top:20px;color:var(--gold);">Recent Reviews</h3>
-
         @if (Reviews.Count == 0)
         {
-            <p style="color:#bfb9ae">No reviews yet — be the first!</p>
+            <p style="color:#bfb9ae;">No reviews yet — be the first!</p>
         }
         else
         {
             <div class="grid">
                 @foreach (var r in Reviews)
                 {
-                    <div class="review-card">
+                    <div class="card">
                         <strong>@r.Name</strong>
-                        <div style="color:#f4b400;font-size:18px;margin:6px 0;">
-                            @(new string('★', r.Stars) + new string('☆', 5 - r.Stars))
-                        </div>
-                        <p style="color:#cfc6b8">@r.Text</p>
+                        <div style="color:#f4b400;">@(new string('★', r.Stars))</div>
+                        <p style="color:#ccc;">@r.Text</p>
                     </div>
                 }
             </div>
@@ -598,33 +385,24 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about" aria-labelledby="about-heading">
-        <div class="section-header">
-            <h2 id="about-heading">About Pure Aura</h2>
-        </div>
-
+    <section id="about">
+        <h2>About Pure Aura</h2>
         <div class="card">
-            <p>
-                Pure Aura creates handcrafted jewelry inspired by minimalist beauty
-                and natural radiance. Each piece is made with intention, using
-                high-quality and sustainable materials.
-            </p>
+            <p>Pure Aura crafts elegant, minimalist jewelry designed to enhance natural beauty.</p>
         </div>
     </section>
 
-    <!-- CONTACT / FOOTER -->
-    <footer id="contact" class="card" style="margin-top:2rem;">
+    <!-- CONTACT -->
+    <footer id="contact" class="card" style="margin-top:2rem;text-align:center;">
         <p><strong>Contact Us</strong></p>
         <p>Email: hello@pureaura.example</p>
-        <p>Phone: +1 (555) 123-4567</p>
-        <br />
-        <p style="color:#9f9789">© 2025 Pure Aura. All rights reserved.</p>
+        <p>© 2025 Pure Aura</p>
     </footer>
 </main>
 
-<!-- FLOATING ICONS -->
-<div class="floating-icon wishlist-btn-floating" title="Wishlist" @onclick="ToggleWishlistModal">❤</div>
-<div class="floating-icon cart-btn" title="Cart" @onclick="ToggleCartModal">🛒</div>
+<!-- Floating Buttons -->
+<div class="floating-icon wishlist-btn-floating" @onclick="ToggleWishlistModal">❤</div>
+<div class="floating-icon cart-btn" @onclick="ToggleCartModal">🛒</div>
 
 <!-- CART MODAL -->
 @if (ShowCartModal)
@@ -647,9 +425,7 @@
                 </ul>
             }
 
-            <div style="display:flex;gap:.6rem;margin-top:1rem;">
-                <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
-            </div>
+            <button class="go-btn" @onclick="() => ShowCartModal = false">Close</button>
         </div>
     </div>
 }
@@ -675,14 +451,12 @@
                 </ul>
             }
 
-            <div style="display:flex;gap:.6rem;margin-top:1rem;">
-                <button class="go-btn" @onclick="() => ShowWishlistModal = false">Close</button>
-            </div>
+            <button class="go-btn" @onclick="() => ShowWishlistModal = false">Close</button>
         </div>
     </div>
 }
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN & SIGNUP MODALS -->
 @if (ShowLoginModal)
 {
     <div class="modal-bg" @onclick="() => ShowLoginModal = false">
@@ -692,32 +466,26 @@
             <EditForm Model="@LoginUser" OnValidSubmit="@HandleLogin">
                 <DataAnnotationsValidator />
 
-                <label style="font-weight:600">Username:</label>
+                <label>Username:</label>
                 <InputText @bind-Value="LoginUser.Username" class="form-control" />
-
-                <label style="font-weight:600">Password:</label>
+                <label>Password:</label>
                 <InputText @bind-Value="LoginUser.CPassword" type="password" class="form-control" />
 
                 @if (!string.IsNullOrEmpty(LoginError))
                 {
-                    <div style="color:#ff6b6b;margin-top:.5rem;">@LoginError</div>
+                    <div style="color:#ff6b6b">@LoginError</div>
                 }
-
                 @if (LoginSuccess)
                 {
-                    <div style="color:#9be19b;margin-top:.5rem;">Login successful!</div>
+                    <div style="color:#9be19b">Login successful!</div>
                 }
 
-                <div style="display:flex;gap:.6rem;margin-top:.8rem;">
-                    <button class="go-btn" type="submit">Login</button>
-                    <button class="go-btn" style="background:#777;color:#fff" @onclick="() => ShowLoginModal = false">Cancel</button>
-                </div>
+                <button class="go-btn" type="submit">Login</button>
             </EditForm>
         </div>
     </div>
 }
 
-<!-- SIGNUP MODAL -->
 @if (ShowSignupModal)
 {
     <div class="modal-bg" @onclick="() => ShowSignupModal = false">
@@ -727,64 +495,58 @@
             <EditForm Model="@SignupUser" OnValidSubmit="@HandleSignup">
                 <DataAnnotationsValidator />
 
-                <label style="font-weight:600">Username:</label>
+                <label>Username:</label>
                 <InputText @bind-Value="SignupUser.Username" class="form-control" />
-
-                <label style="font-weight:600">Password:</label>
+                <label>Password:</label>
                 <InputText @bind-Value="SignupUser.CPassword" type="password" class="form-control" />
-
-                <label style="font-weight:600">Confirm Password:</label>
+                <label>Confirm Password:</label>
                 <InputText @bind-Value="SignupConfirm" type="password" class="form-control" />
 
                 @if (!string.IsNullOrEmpty(SignupError))
                 {
-                    <div style="color:#ff6b6b;margin-top:.5rem;">@SignupError</div>
+                    <div style="color:#ff6b6b">@SignupError</div>
                 }
-
                 @if (SignupSuccess)
                 {
-                    <div style="color:#9be19b;margin-top:.5rem;">Account created! You can now login.</div>
+                    <div style="color:#9be19b">Account created! You can now login.</div>
                 }
 
-                <div style="display:flex;gap:.6rem;margin-top:.8rem;">
-                    <button class="go-btn" type="submit">Sign Up</button>
-                    <button class="go-btn" style="background:#777;color:#fff" @onclick="() => ShowSignupModal = false">Cancel</button>
-                </div>
+                <button class="go-btn" type="submit">Sign Up</button>
             </EditForm>
         </div>
     </div>
 }
 
 @code {
-    /* ---------------- DRAWER ---------------- */
+    /* ------------------- DRAWER ------------------- */
     private bool DrawerOpen = false;
 
-    /* ---------------- CART ---------------- */
+    /* ------------------- CART ------------------- */
     private List<string> Cart = new();
     private bool ShowCartModal = false;
-    void AddToCart(string itemName)
+
+    void AddToCart(string item)
     {
-        Cart.Add(itemName);
-        // Optionally open cart after adding
+        Cart.Add(item);
         ShowCartModal = true;
     }
+
     void ToggleCartModal() => ShowCartModal = !ShowCartModal;
 
-    /* ---------------- WISHLIST ---------------- */
+    /* ------------------- WISHLIST ------------------- */
     private List<string> Wishlist = new();
     private bool ShowWishlistModal = false;
 
-    void AddToWishlist(string itemName)
+    void AddToWishlist(string item)
     {
-        if (!Wishlist.Contains(itemName))
-            Wishlist.Add(itemName);
-        // Optionally show wishlist
+        if (!Wishlist.Contains(item))
+            Wishlist.Add(item);
         ShowWishlistModal = true;
     }
 
     void ToggleWishlistModal() => ShowWishlistModal = !ShowWishlistModal;
 
-    /* ---------------- LOGIN ---------------- */
+    /* ------------------- LOGIN ------------------- */
     private bool ShowLoginModal = false;
     private UserModel LoginUser = new();
     private bool LoginSuccess = false;
@@ -792,15 +554,14 @@
 
     private async Task HandleLogin()
     {
-        LoginError = "";
         LoginSuccess = false;
+        LoginError = "";
 
         try
         {
             await Conn.OpenAsync();
-            using var cmd = new NpgsqlCommand(@"
-                SELECT username
-                FROM Users
+            var cmd = new NpgsqlCommand(@"
+                SELECT username FROM Users
                 WHERE username=@u AND password_hash = crypt(@p, password_hash);
             ", Conn);
 
@@ -813,7 +574,6 @@
             if (result != null)
             {
                 LoginSuccess = true;
-                // keep modal visible a moment to show success
                 await Task.Delay(900);
                 ShowLoginModal = false;
                 LoginUser = new UserModel();
@@ -823,15 +583,14 @@
                 LoginError = "Invalid username or password.";
             }
         }
-        catch (Exception ex)
+        catch
         {
-            LoginError = "Login error. Please try again.";
+            LoginError = "Login error.";
             try { await Conn.CloseAsync(); } catch { }
-            Console.Error.WriteLine(ex);
         }
     }
 
-    /* ---------------- SIGNUP ---------------- */
+    /* ------------------- SIGNUP ------------------- */
     private bool ShowSignupModal = false;
     private UserModel SignupUser = new();
     private string SignupConfirm = "";
@@ -840,8 +599,8 @@
 
     private async Task HandleSignup()
     {
-        SignupError = "";
         SignupSuccess = false;
+        SignupError = "";
 
         if (SignupUser.CPassword != SignupConfirm)
         {
@@ -852,18 +611,20 @@
         try
         {
             await Conn.OpenAsync();
-            using var cmd = new NpgsqlCommand(@"
+            var cmd = new NpgsqlCommand(@"
                 INSERT INTO Users(username, password_hash)
-                VALUES(@u, crypt(@p, gen_salt('bf')));", Conn);
+                VALUES(@u, crypt(@p, gen_salt('bf')));
+            ", Conn);
 
             cmd.Parameters.AddWithValue("@u", SignupUser.Username ?? "");
             cmd.Parameters.AddWithValue("@p", SignupUser.CPassword ?? "");
 
             await cmd.ExecuteNonQueryAsync();
-            SignupSuccess = true;
 
+            SignupSuccess = true;
             await Task.Delay(900);
             ShowSignupModal = false;
+
             SignupUser = new UserModel();
             SignupConfirm = "";
         }
@@ -871,10 +632,9 @@
         {
             SignupError = "Username already exists.";
         }
-        catch (Exception ex)
+        catch
         {
-            SignupError = "Signup failed. Please try again.";
-            Console.Error.WriteLine(ex);
+            SignupError = "Signup failed.";
         }
         finally
         {
@@ -882,14 +642,14 @@
         }
     }
 
-    /* ---------------- MODELS ---------------- */
+    /* ------------------- MODELS ------------------- */
     public class UserModel
     {
         public string Username { get; set; } = "";
         public string CPassword { get; set; } = "";
     }
 
-    /* ---------------- REVIEWS ---------------- */
+    /* ------------------- REVIEWS ------------------- */
     private class ReviewModel
     {
         public string Name { get; set; } = "";
@@ -904,13 +664,10 @@
 
     void SubmitReview()
     {
-        if (string.IsNullOrWhiteSpace(ReviewName) ||
-            string.IsNullOrWhiteSpace(ReviewText) ||
-            ReviewStars == 0)
-        {
-            // silently ignore — or set an inline error state
+        if (string.IsNullOrWhiteSpace(ReviewName)
+            || string.IsNullOrWhiteSpace(ReviewText)
+            || ReviewStars == 0)
             return;
-        }
 
         Reviews.Insert(0, new ReviewModel
         {
