@@ -1,58 +1,69 @@
-﻿@page "/posting" 
-@using Npgsql
+﻿@page "/postcreation"
 @using Microsoft.AspNetCore.Components.Forms
+@using Pura.Services  <!-- Make sure this matches your CmdStorage namespace -->
 
+@inject CmdStorage CmdStorage
 
-<PageTitle>Create Post</PageTitle> 
-<h1>Create a New Market Post</h1> 
+<PageTitle>Create Post</PageTitle>
 
-<EditForm Model="@postModel" OnValidSubmit="HandleValidSubmit" FormName="Create">
+<h1>Create a New Market Post</h1>
+
+<EditForm Model="@postModel" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
+
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <InputText id="title" class="form-control" @bind-Value="postModel.Title" />
     </div>
+
     <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <InputTextArea id="description" class="form-control" @bind-Value="postModel.Description" />
     </div>
+
     <div class="mb-3">
         <label for="price" class="form-label">Price</label>
         <InputNumber id="price" class="form-control" @bind-Value="postModel.Price" />
     </div>
+
     <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm> 
+</EditForm>
+
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert @(Message.StartsWith("Error") ? "alert-danger" : "alert-success") mt-3">
+        @Message
+    </div>
+}
 
 @code {
-    private PostModel postModel = new PostModel();
+    private PostModel postModel = new();
+    private string? Message;
+
     private async Task HandleValidSubmit()
     {
-        var connectionString = "Host=ep-dark-king-a92zz5wn-pooler.gwc.azure.neon.tech; Database=neondb; Username=neondb_owner; Password=npg_N1Kf7gokGnEe; SSL Mode=VerifyFull; Channel Binding=Require;";
-        using var conn = new NpgsqlConnection(connectionString);
-        await conn.OpenAsync();
+        try
+        {
+            await CmdStorage.InsertProductAsync(
+                name: postModel.Title,
+                price: postModel.Price,
+                description: postModel.Description
+            );
 
-        const string sql = "INSERT INTO products (name, price, description) VALUES (@name, @price, @description)";
-        using var cmd = new NpgsqlCommand(sql, conn);
-        cmd.Parameters.Add("name", NpgsqlTypes.NpgsqlDbType.Text).Value = postModel.Title ?? "";
-        cmd.Parameters.Add("price", NpgsqlTypes.NpgsqlDbType.Numeric).Value = postModel.Price;
-        cmd.Parameters.Add("description", NpgsqlTypes.NpgsqlDbType.Text).Value = postModel.Description ?? "";
-
-        await cmd.ExecuteNonQueryAsync();
-
-
-
-        const string q = @"
-        SELECT table_schema, column_name, data_type
-        FROM information_schema.columns
-        WHERE table_name = 'products'
-        ORDER BY table_schema, column_name;";
-
+            Message = "Post created successfully!";
+            postModel = new(); // Reset form
+        }
+        catch (Exception ex)
+        {
+            Message = $"Error: {ex.Message}";
+        }
     }
+
     public class PostModel
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-    } 
+    }
 }

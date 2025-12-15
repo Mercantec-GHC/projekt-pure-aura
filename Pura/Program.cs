@@ -1,6 +1,7 @@
-using Pura.Components;
-using Npgsql;
 using Microsoft.AspNetCore.Builder;
+using Npgsql;
+using Pura.Components;
+using Pura.Services;
 
 namespace Pura
 {
@@ -31,7 +32,8 @@ namespace Pura
             {
                 await using var conn = await dataSource.OpenConnectionAsync();
                 await using var cmd = new NpgsqlCommand("SELECT version()", conn);
-                var version = await cmd.ExecuteScalarAsync();
+                var version = await cmd.ExecuteScalarAsync(); 
+                
 
                 Console.WriteLine("PostgreSQL IS CONNECTED!");
                 Console.WriteLine($"Version: {version}");
@@ -67,7 +69,7 @@ namespace Pura
             app.MapStaticAssets();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
-
+            
             app.Run();
 
             // Important: Dispose the data source when the app shuts down
