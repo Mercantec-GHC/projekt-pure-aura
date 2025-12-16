@@ -1,0 +1,52 @@
+﻿@page "/Market"
+@rendermode InteractiveServer
+
+<PageTitle>Market</PageTitle>
+
+
+<header>
+    <h1>Market</h1>
+    <div class="menu-icon" title="Open menu" @onclick="() => DrawerOpen = true">☰</div>
+</header>
+
+<section>
+    <div class="card">
+        <div class="product-visual">Aster Earrings</div>
+        <div>
+            <h4>Aster Earrings</h4>
+            <p>Rose gold minimalist studs</p>
+
+            <div class="price-row">
+                <strong>$119</strong>
+            </div>
+
+            <div class="card-actions">
+                <button class="go-btn" ("Aster Earrings")'>Add to Cart</button>
+                <button class="wishlist-btn" ("Aster Earrings")'>♥ Save</button>
+            </div>
+        </div> 
+    </div> 
+
+    @if (DrawerOpen)
+    {
+        <div class="drawer-bg" @onclick="() => DrawerOpen = false"></div>
+
+        <div class="drawer" @onclick:stopPropagation>
+            <h3>Pure Aura</h3>
+
+            <a href="#collections" @onclick="() => DrawerOpen = false">Collections</a>
+            <a href="#featured" @onclick="() => DrawerOpen = false">Featured</a>
+            <a href="#reviews" @onclick="() => DrawerOpen = false">Reviews</a>
+            <a href="#about" @onclick="() => DrawerOpen = false">About</a>
+            <a href="#contact" @onclick="() => DrawerOpen = false">Contact</a>
+
+            <div class="spacer"></div>
+
+
+        </div>
+    } 
+</section>
+
+@code { 
+    private bool DrawerOpen = false;
+}

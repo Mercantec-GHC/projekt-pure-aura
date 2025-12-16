@@ -49,6 +49,7 @@ namespace Pura
             // Register NpgsqlConnection to be created from the NpgsqlDataSource
             builder.Services.AddSingleton<NpgsqlConnection>(sp =>
                 sp.GetRequiredService<NpgsqlDataSource>().CreateConnection());
+            builder.Services.AddScoped<Pura.Services.CmdStorage>();
 
             // ... other service registrations (no changes needed from here)
             builder.Services.AddRazorComponents()

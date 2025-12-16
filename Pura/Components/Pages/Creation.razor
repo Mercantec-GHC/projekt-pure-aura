@@ -6,9 +6,10 @@
 
 <PageTitle>Create Post</PageTitle>
 
-<h1>Create a New Market Post</h1>
+<h1>Create a new market listing</h1>
 
-<EditForm Model="@postModel" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@postModel"
+          OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -27,8 +28,14 @@
         <InputNumber id="price" class="form-control" @bind-Value="postModel.Price" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
+    <button type="submit" class="go-btn">Submit</button>
+</EditForm> 
+
+<div class="go-btn">
+    <NavLink class="nav-link" href="Market">
+        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Cancel and return to Market
+    </NavLink>
+</div>
 
 @if (!string.IsNullOrEmpty(Message))
 {
