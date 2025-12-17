@@ -1,43 +1,71 @@
 ﻿@page "/postcreation"
 @using Microsoft.AspNetCore.Components.Forms
-@using Pura.Services  <!-- Make sure this matches your CmdStorage namespace -->
+@using Pura.Services
+@using System.ComponentModel.DataAnnotations
+@using System.Text.Json
 
 @inject CmdStorage CmdStorage
 
-<PageTitle>Create Post</PageTitle>
+<PageTitle>Create Jewelry Listing</PageTitle>
 
-<h1>Create a new market listing</h1>
+<h1>Create a new jewelry listing</h1>
 
-<EditForm Model="@postModel"
+<EditForm Model="@jewelryModel"
+          OnSubmit="HandleSubmit"
           OnValidSubmit="HandleValidSubmit"
-          FormName="CreatePostForm">
+          FormName="CreateJewelryForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <InputText id="title" class="form-control" @bind-Value="postModel.Title" />
+        <InputText id="title" class="form-control" @bind-Value="jewelryModel.Title" @bind:event="oninput" />
+        <ValidationMessage For="@(() => jewelryModel.Title)" />
     </div>
 
     <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <InputTextArea id="description" class="form-control" @bind-Value="postModel.Description" />
+        <InputTextArea id="description" class="form-control" @bind-Value="jewelryModel.Description" @bind:event="oninput" />
+        <ValidationMessage For="@(() => jewelryModel.Description)" />
     </div>
 
     <div class="mb-3">
         <label for="price" class="form-label">Price</label>
-        <InputNumber id="price" class="form-control" @bind-Value="postModel.Price" />
+        <InputNumber id="price" class="form-control" TValue="decimal" @bind-Value="jewelryModel.Price" @bind:event="oninput" />
+        <ValidationMessage For="@(() => jewelryModel.Price)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="brand" class="form-label">Brand/Designer</label>
+        <InputText id="brand" class="form-control" @bind-Value="jewelryModel.Brand" @bind:event="oninput" />
+    </div>
+
+    <div class="mb-3">
+        <label for="type" class="form-label">Type (Ring, Necklace, etc.)</label>
+        <InputText id="type" class="form-control" @bind-Value="jewelryModel.Type" @bind:event="oninput" />
+    </div>
+
+    <div class="mb-3">
+        <label for="material" class="form-label">Material (Gold, Silver, etc.)</label>
+        <InputText id="material" class="form-control" @bind-Value="jewelryModel.Material" @bind:event="oninput" />
+    </div>
+
+    <div class="mb-3">
+        <label for="gemstone" class="form-label">Gemstone</label>
+        <InputText id="gemstone" class="form-control" @bind-Value="jewelryModel.Gemstone" @bind:event="oninput" />
+    </div>
+
+    <div class="mb-3">
+        <label for="condition" class="form-label">Condition</label>
+        <InputText id="condition" class="form-control" @bind-Value="jewelryModel.Condition" @bind:event="oninput" />
     </div>
 
     <button type="submit" class="go-btn">Submit</button>
 </EditForm>
 
-
-<div class="go-btn">
-    <NavLink class="nav-link" href="Market">
-        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Cancel and return to Market
-    </NavLink>
-</div>
+<hr />
+<h5>Client model (live)</h5>
+<pre>@JsonSerializer.Serialize(jewelryModel)</pre>
 
 @if (!string.IsNullOrEmpty(Message))
 {
@@ -47,21 +75,48 @@
 }
 
 @code {
-    private PostModel postModel = new();
+    private Pura.Services.JewelryModel jewelryModel = new();
     private string? Message;
+
+    // Called on every submit attempt (valid or not)
+    private async Task HandleSubmit(EditContext editContext)
+    {
+        // force validation and capture messages so you can see exactly what fails
+        var isValid = editContext.Validate();
+        var errors = editContext.GetValidationMessages();
+        Console.WriteLine($"[SERVER] OnSubmit called. Valid={isValid}. Messages: {string.Join(" | ", errors)}");
+
+        if (!isValid)
+        {
+            // show first validation message to user
+            Message = errors.FirstOrDefault() ?? "Validation failed";
+            StateHasChanged();
+            return;
+        }
+
+        // If valid, OnValidSubmit will run too; you can optionally call the valid handler here:
+        await HandleValidSubmit();
+    }
 
     private async Task HandleValidSubmit()
     {
+        Console.WriteLine($"[SERVER] HandleValidSubmit Title='{jewelryModel.Title}', Desc='{jewelryModel.Description}', Price={jewelryModel.Price}");
+
+        // Server-side guard (should not be needed if validation passed)
+        if (string.IsNullOrWhiteSpace(jewelryModel.Title)
+            || string.IsNullOrWhiteSpace(jewelryModel.Description)
+            || jewelryModel.Price <= 0m)
+        {
+            Message = "Validation failed (server). Check required fields.";
+            return;
+        }
+
         try
         {
-            await CmdStorage.InsertProductAsync(
-                name: postModel.Title,
-                price: postModel.Price,
-                description: postModel.Description
-            );
-
-            Message = "Post created successfully!";
-            postModel = new(); // Reset form
+            await CmdStorage.InsertJewelryAsync(jewelryModel);
+            Message = "Jewelry listing created successfully!";
+            jewelryModel = new Pura.Services.JewelryModel();
+            StateHasChanged();
         }
         catch (Exception ex)
         {
@@ -69,7 +124,7 @@
         }
     }
 
-    public class PostModel
+    public class JewelryModel
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

@@ -9,6 +9,10 @@
     <div class="menu-icon" title="Open menu" @onclick="() => DrawerOpen = true">☰</div>
 </header>
 
+<NavLink class="nav-link" href="postcreation">
+    <span class="go-btn" aria-hidden="true"></span> Show other products
+</NavLink>
+
 <section>
     <div class="card">
         <div class="product-visual">Aster Earrings</div>
@@ -26,6 +30,8 @@
             </div>
         </div> 
     </div> 
+
+
 
     @if (DrawerOpen)
     {

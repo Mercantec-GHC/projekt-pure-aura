@@ -1,11 +1,10 @@
 ﻿// Services/CmdStorage.cs
 using Npgsql;
-using NpgsqlTypes;
 using Microsoft.Extensions.Configuration;
 
-namespace Pura.Services // Adjust namespace to match your project
+namespace Pura.Services
 {
-    public class CmdStorage
+    public partial class CmdStorage
     {
         private readonly string _connectionString;
 
@@ -15,7 +14,7 @@ namespace Pura.Services // Adjust namespace to match your project
                 ?? "Host=ep-dark-king-a92zz5wn-pooler.gwc.azure.neon.tech; Database=neondb; Username=neondb_owner; Password=npg_N1Kf7gokGnEe; SSL Mode=VerifyFull; Channel Binding=Require;";
         }
 
-        public async Task InsertProductAsync(string? name, decimal price, string? description)
+        public async Task InsertJewelryAsync(string? name, decimal price, string? description)
         {
             await using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
@@ -49,6 +48,25 @@ namespace Pura.Services // Adjust namespace to match your project
                 products.Add((id, name, price, description));
             }
             return products;
+        }
+
+        // convenience overload that accepts the shared model
+        public async Task InsertJewelryAsync(JewelryModel jewelry)
+        {
+            await using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            const string sql = @"
+                INSERT INTO products (name, price, description)
+                VALUES (@name, @price, @description)";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@name", (object?)jewelry.Title ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@price", jewelry.Price);
+            cmd.Parameters.AddWithValue("@description", (object?)jewelry.Description ?? DBNull.Value);
+
+            await cmd.ExecuteNonQueryAsync();
         }
     }
 }
