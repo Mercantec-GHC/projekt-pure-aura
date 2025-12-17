@@ -8,7 +8,7 @@ Anvendte teknologi:
 
 Blazor (.NET) 
 C# 
-.Razor komponenter
+.Razor komponenter 
 PostgreSQL 
 NpgSQL (Nuget Package) 
 HTML /CSS / Bootstrap 
