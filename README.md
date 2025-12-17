@@ -15,6 +15,7 @@ Anvendte teknologi:
 •	Authentication (Log in / Sign up)
 
 ## Embedded Video og designfil 
+https://drive.google.com/drive/folders/1DhpTLgiJ9bblDTQprMexhvXK_qPzJebZ
 
 ## Opstartsguide af projektet - Hvordan starter man det!
 For at kunne starte vores applikation skal man havde gjordt følgende først:
