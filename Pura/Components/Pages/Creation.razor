@@ -9,7 +9,8 @@
 <h1>Create a new market listing</h1>
 
 <EditForm Model="@postModel"
-          OnValidSubmit="HandleValidSubmit">
+          OnValidSubmit="HandleValidSubmit"
+          FormName="CreatePostForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -29,7 +30,8 @@
     </div>
 
     <button type="submit" class="go-btn">Submit</button>
-</EditForm> 
+</EditForm>
+
 
 <div class="go-btn">
     <NavLink class="nav-link" href="Market">
