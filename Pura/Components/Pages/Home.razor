@@ -20,7 +20,6 @@
         --glow: 0 0 20px rgba(212,175,55,0.25);
     }
 
-    /* Reset + base */
     * {
         box-sizing: border-box;
     }
@@ -49,7 +48,6 @@
         color: #c9c5ba;
     }
 
-    /* ================= HEADER ================= */
     header {
         position: fixed;
         top: 0;
@@ -84,7 +82,6 @@
             transform: scale(1.08);
         }
 
-    /* ================= DRAWER NAV ================= */
     .drawer-bg {
         position: fixed;
         inset: 0;
@@ -154,14 +151,12 @@
         }
     }
 
-    /* ================= PAGE LAYOUT ================= */
     main {
-        padding: 6.5rem 2rem 3rem; /* account for fixed header */
+        padding: 6.5rem 2rem 3rem; 
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    /* HERO */
     .hero {
         padding: 3rem 1rem 2rem;
         text-align: center;
@@ -205,7 +200,6 @@
         font-size: 1.05rem;
     }
 
-    /* ================= GRID & CARDS ================= */
     section {
         margin-top: 2rem;
     }
@@ -278,7 +272,6 @@
         flex-wrap: wrap;
     }
 
-    /* ================= BUTTONS ================= */
     .go-btn {
         padding: 10px 18px;
         background: var(--gold);
@@ -311,7 +304,6 @@
             transform: translateY(-3px);
         }
 
-    /* ================= FLOATING ICONS ================= */
     .floating-icon {
         position: fixed;
         bottom: 22px;
@@ -345,7 +337,6 @@
         transform: translateY(-4px);
     }
 
-    /* ================= MODALS ================= */
     .modal-bg {
         position: fixed;
         inset: 0;
@@ -377,7 +368,6 @@
         color: var(--text);
     }
 
-    /* REVIEWS */
     .review-card {
         background: linear-gradient(180deg,#121214,#0f0f10);
         border: 1px solid var(--soft-border);
@@ -400,7 +390,6 @@
         border-top: 1px solid var(--soft-border);
     }
 
-    /* Small screens tweak */
     media (max-width: 640px) {
         .hero h1 {
             font-size: 2.4rem;
@@ -438,7 +427,6 @@
 }
 
 <main>
-    <!-- HERO -->
     <section class="hero" aria-label="Hero">
         <h1>Pure Aura</h1>
         <p>Dark Luxury — Timeless handcrafted jewelry designed to shine in the evening light.</p>
@@ -450,7 +438,6 @@
         </div>
     </section>
 
-    <!-- COLLECTIONS -->
     <section id="collections" aria-labelledby="collections-heading">
         <div class="section-header">
             <h2 id="collections-heading">Collections</h2>
@@ -483,14 +470,13 @@
         </div>
     </section>
 
-    <!-- FEATURED -->
     <section id="featured" aria-labelledby="featured-heading">
         <div class="section-header">
             <h2 id="featured-heading">Featured Jewelry</h2>
         </div>
 
         <div class="grid">
-            <!-- PRODUCT 1 -->
+         
             <div class="card">
                 <div class="product-visual">Luna Necklace</div>
                 <div>
@@ -508,7 +494,6 @@
                 </div>
             </div>
 
-            <!-- PRODUCT 2 -->
             <div class="card">
                 <div class="product-visual">Sol Ring</div>
                 <div>
@@ -526,7 +511,6 @@
                 </div>
             </div>
 
-            <!-- PRODUCT 3 -->
             <div class="card">
                 <div class="product-visual">Aster Earrings</div>
                 <div>
@@ -546,7 +530,6 @@
         </div>
     </section>
 
-    <!-- REVIEWS -->
     <section id="reviews" aria-labelledby="reviews-heading">
         <div class="section-header">
             <h2 id="reviews-heading">Customer Reviews</h2>
@@ -597,7 +580,6 @@
         }
     </section>
 
-    <!-- ABOUT -->
     <section id="about" aria-labelledby="about-heading">
         <div class="section-header">
             <h2 id="about-heading">About Pure Aura</h2>
@@ -612,7 +594,6 @@
         </div>
     </section>
 
-    <!-- CONTACT / FOOTER -->
     <footer id="contact" class="card" style="margin-top:2rem;">
         <p><strong>Contact Us</strong></p>
         <p>Email: hello@pureaura.example</p>
@@ -622,11 +603,9 @@
     </footer>
 </main>
 
-<!-- FLOATING ICONS -->
 <div class="floating-icon wishlist-btn-floating" title="Wishlist" @onclick="ToggleWishlistModal">❤</div>
 <div class="floating-icon cart-btn" title="Cart" @onclick="ToggleCartModal">🛒</div>
 
-<!-- CART MODAL -->
 @if (ShowCartModal)
 {
     <div class="modal-bg" @onclick="() => ShowCartModal = false">
@@ -654,7 +633,6 @@
     </div>
 }
 
-<!-- WISHLIST MODAL -->
 @if (ShowWishlistModal)
 {
     <div class="modal-bg" @onclick="() => ShowWishlistModal = false">
@@ -682,7 +660,6 @@
     </div>
 }
 
-<!-- LOGIN MODAL -->
 @if (ShowLoginModal)
 {
     <div class="modal-bg" @onclick="() => ShowLoginModal = false">
@@ -717,7 +694,6 @@
     </div>
 }
 
-<!-- SIGNUP MODAL -->
 @if (ShowSignupModal)
 {
     <div class="modal-bg" @onclick="() => ShowSignupModal = false">
@@ -756,21 +732,21 @@
 }
 
 @code {
-    /* ---------------- DRAWER ---------------- */
+   
     private bool DrawerOpen = false;
 
-    /* ---------------- CART ---------------- */
+    
     private List<string> Cart = new();
     private bool ShowCartModal = false;
     void AddToCart(string itemName)
     {
         Cart.Add(itemName);
-        // Optionally open cart after adding
+     
         ShowCartModal = true;
     }
     void ToggleCartModal() => ShowCartModal = !ShowCartModal;
 
-    /* ---------------- WISHLIST ---------------- */
+  
     private List<string> Wishlist = new();
     private bool ShowWishlistModal = false;
 
@@ -778,13 +754,13 @@
     {
         if (!Wishlist.Contains(itemName))
             Wishlist.Add(itemName);
-        // Optionally show wishlist
+      
         ShowWishlistModal = true;
     }
 
     void ToggleWishlistModal() => ShowWishlistModal = !ShowWishlistModal;
 
-    /* ---------------- LOGIN ---------------- */
+  
     private bool ShowLoginModal = false;
     private UserModel LoginUser = new();
     private bool LoginSuccess = false;
@@ -813,7 +789,7 @@
             if (result != null)
             {
                 LoginSuccess = true;
-                // keep modal visible a moment to show success
+               
                 await Task.Delay(900);
                 ShowLoginModal = false;
                 LoginUser = new UserModel();
@@ -831,7 +807,7 @@
         }
     }
 
-    /* ---------------- SIGNUP ---------------- */
+  
     private bool ShowSignupModal = false;
     private UserModel SignupUser = new();
     private string SignupConfirm = "";
@@ -882,14 +858,13 @@
         }
     }
 
-    /* ---------------- MODELS ---------------- */
+   
     public class UserModel
     {
         public string Username { get; set; } = "";
         public string CPassword { get; set; } = "";
     }
 
-    /* ---------------- REVIEWS ---------------- */
     private class ReviewModel
     {
         public string Name { get; set; } = "";
@@ -908,7 +883,7 @@
             string.IsNullOrWhiteSpace(ReviewText) ||
             ReviewStars == 0)
         {
-            // silently ignore — or set an inline error state
+        
             return;
         }
 
