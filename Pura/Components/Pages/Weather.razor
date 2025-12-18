@@ -1,77 +1,58 @@
-﻿@page "/postcreation"
-@inject PostService PostService
-@attribute [StreamRendering]
+﻿@page "/posting" 
+@using Npgsql
+@using Microsoft.AspNetCore.Components.Forms
 
-<PageTitle>Create Post</PageTitle>
-<h1>Create Post</h1>
 
-<EditForm Model="@post" OnValidSubmit="@HandleSubmit" FormName="Creation">
+<PageTitle>Create Post</PageTitle> 
+<h1>Create a New Market Post</h1> 
+
+<EditForm Model="@postModel" OnValidSubmit="HandleValidSubmit" FormName="Create">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
     <div class="mb-3">
-        <label>Title</label>
-        <InputText @bind-Value="post.Title" class="form-control" />
+        <label for="title" class="form-label">Title</label>
+        <InputText id="title" class="form-control" @bind-Value="postModel.Title" />
     </div>
-
     <div class="mb-3">
-        <label>Description</label>
-        <InputTextArea @bind-Value="post.Description" class="form-control" />
+        <label for="description" class="form-label">Description</label>
+        <InputTextArea id="description" class="form-control" @bind-Value="postModel.Description" />
     </div>
-
     <div class="mb-3">
-        <label>Price</label>
-        <InputText @bind-Value="post.Price" placeholder="$50" class="form-control" />
+        <label for="price" class="form-label">Price</label>
+        <InputNumber id="price" class="form-control" @bind-Value="postModel.Price" />
     </div>
-
-    <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
-        @if (isSubmitting)
-        {
-            <span>Saving...</span>
-        }
-        else
-        {
-
-            <span>Submit Post</span>
-        }
-    </button>
-
-    @if (!string.IsNullOrEmpty(message))
-    {
-        <div class="alert alert-success mt-3">@message</div>
-    }
-</EditForm>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm> 
 
 @code {
-    private PostModel post = new();
-    private bool isSubmitting = false;
-    private string? message;
-
-    private async Task HandleSubmit()
+    private PostModel postModel = new PostModel();
+    private async Task HandleValidSubmit()
     {
-        isSubmitting = true;
-        message = null;
+        var connectionString = "Host=ep-dark-king-a92zz5wn-pooler.gwc.azure.neon.tech; Database=neondb; Username=neondb_owner; Password=npg_N1Kf7gokGnEe; SSL Mode=VerifyFull; Channel Binding=Require;";
+        using var conn = new NpgsqlConnection(connectionString);
+        await conn.OpenAsync();
 
-        try
-        {
-            await PostService.CreatePostAsync(post.Title, post.Description, post.Price);
-            message = "Post created successfully!";
-            post = new(); // clear form
-        }
-        catch (Exception ex)
-        {
-            message = $"Error: {ex.Message}";
-        }
-        finally
-        {
-            isSubmitting = false;
-        }
+        const string sql = "INSERT INTO products (name, price, description) VALUES (@name, @price, @description)";
+        using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.Add("name", NpgsqlTypes.NpgsqlDbType.Text).Value = postModel.Title ?? "";
+        cmd.Parameters.Add("price", NpgsqlTypes.NpgsqlDbType.Numeric).Value = postModel.Price;
+        cmd.Parameters.Add("description", NpgsqlTypes.NpgsqlDbType.Text).Value = postModel.Description ?? "";
+
+        await cmd.ExecuteNonQueryAsync();
+
+
+
+        const string q = @"
+        SELECT table_schema, column_name, data_type
+        FROM information_schema.columns
+        WHERE table_name = 'products'
+        ORDER BY table_schema, column_name;";
+
     }
-
     public class PostModel
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string Price { get; set; } = string.Empty;
-    }
+        public decimal Price { get; set; }
+    } 
 }
